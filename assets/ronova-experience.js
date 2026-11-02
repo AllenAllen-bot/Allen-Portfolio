@@ -238,11 +238,13 @@
    const width=innerWidth;
    stickers.forEach((img,i)=>{
      const r=Number(img.dataset.offset),side=Number(img.dataset.side);
-     const x=mobile ? (side===0 ? 7+r*7 : 85+r*8) : (side===0 ? 4+r*13 : 81+r*15);
+     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23)*1.31;
+     // Edge-peek placement: keep most of each decoration outside text columns.
+     const inward=mobile ? size*.18 : Math.min(42,size*.35);
+     const x=side===0 ? inward-size/2 : width-inward+size/2;
      const y=Math.min(height-42,Math.max(80,95+band*(i+.3+(r-.5)*.47)));
      img.style.left=x+"%";
      img.style.top=y+"px";
-     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23)*1.31;
      img.style.setProperty("--sticker-size",Math.round(size)+"px");
      img.style.setProperty("--sticker-angle",img.dataset.tilt+"deg");
    });
