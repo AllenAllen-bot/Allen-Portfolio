@@ -1,0 +1,154 @@
+/* 『Allen』 | cinematic menu and scroll motion · responsive, accessible */
+:root {
+  --motion-ease: cubic-bezier(.22,1,.36,1);
+  --motion-red: #e52852;
+  --motion-gold: #f1c58c;
+}
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: .22s ease-in both motion-page-out; }
+::view-transition-new(root) { animation: .35s var(--motion-ease) both motion-page-in; }
+@keyframes motion-page-out { to { opacity:.52; transform:translateY(-7px); } }
+@keyframes motion-page-in { from { opacity:.52; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+/* A narrow streak of crimson light travels across each menu item. */
+aside nav a {
+  isolation:isolate;
+  overflow:hidden;
+  position:relative;
+  transform:translateZ(0);
+  transition:transform .32s var(--motion-ease), color .2s ease, border-color .3s ease,
+    box-shadow .32s ease, background .32s ease !important;
+}
+aside nav a::before {
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(105deg,rgba(200,31,69,.28),rgba(245,190,138,.08) 55%,transparent);
+  transform:translateX(-110%);transition:transform .47s var(--motion-ease);pointer-events:none;
+}
+aside nav a::after {
+  content:"";position:absolute;inset:-25% auto -25% -28%;
+  width:34%;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,200,210,.16),transparent);
+  transform:skewX(-20deg) translateX(-170%);
+  transition:transform .52s var(--motion-ease),opacity .4s ease;
+  opacity:0;
+}
+aside nav a:hover::before,aside nav a:focus-visible::before,aside nav a.active::before { transform:translateX(0); }
+aside nav a:hover::after,aside nav a:focus-visible::after { transform:skewX(-20deg) translateX(410%);opacity:1; }
+aside nav a:hover,aside nav a:focus-visible {
+  transform:translateX(4px);
+  box-shadow:inset 3px 0 var(--motion-gold),0 0 25px rgba(214,38,83,.18) !important;
+}
+aside nav a .fa{transition:transform .36s var(--motion-ease),color .25s ease}
+aside nav a:hover .fa,aside nav a:focus-visible .fa {
+  transform:translateY(-2px) rotate(-7deg) scale(1.08);color:var(--motion-gold);
+}
+aside nav a.active {
+  border-color:rgba(246,187,201,.24);
+  box-shadow:inset 3px 0 var(--motion-gold),0 0 19px rgba(187,25,64,.18) !important;
+}
+aside nav a:focus-visible {outline:2px solid var(--motion-gold)!important;outline-offset:2px;}
+
+/* Initial page arrival: navigation items appear as a soft, staggered cascade. */
+body.cinema-motion:not(.a13x-motion-off) aside nav a {
+  animation:motion-menu-arrive .58s var(--motion-ease) both;
+  animation-delay:calc(var(--motion-index,0) * 55ms);
+}
+@keyframes motion-menu-arrive {
+  from { opacity:0;transform:translate3d(-16px,6px,0); }
+  to { opacity:1;transform:translate3d(0,0,0); }
+}
+
+/* Scroll-driven section motion, only active after script initialization. */
+body.cinema-motion .cinema-reveal {
+  opacity:0;
+  transform:translate3d(0,26px,0) scale(.985);
+  transition:opacity .72s ease,transform .84s var(--motion-ease);
+  transition-delay:var(--cinema-stagger,0ms);
+}
+body.cinema-motion .cinema-reveal.cinema-visible {
+  opacity:1;transform:translate3d(0,0,0) scale(1);
+}
+body.cinema-motion .cinema-reveal.cinema-visible .title {
+  text-shadow:0 0 18px rgba(235,53,98,.22),0 2px 7px rgba(0,0,0,.5);
+}
+body.cinema-motion .ronova-top-gallery img {
+  animation:motion-portrait-arrive .8s var(--motion-ease) both;
+  animation-delay:calc(.08s + var(--panel-index,0) * 105ms);
+}
+@keyframes motion-portrait-arrive {
+  from { opacity:0;transform:translateY(14px) scale(.965); }
+  to { opacity:1;transform:translateY(0) scale(1); }
+}
+
+/* Existing progress indicator gains a more cinematic, thinner light-trail. */
+.a13x-progress {height:3px!important;background:rgba(32,2,12,.35)!important;}
+.a13x-progress span {box-shadow:0 0 10px rgba(240,45,95,.65),0 0 22px rgba(252,181,111,.3)!important;}
+
+/* A little extra life to lore and audio interactions. */
+.rn-chapter summary,.audio-control,.audio-node {
+  transition:background .28s ease,border-color .28s ease,box-shadow .35s ease,transform .35s var(--motion-ease);
+}
+.rn-chapter summary:hover,.rn-chapter summary:focus-visible {
+  box-shadow:inset 3px 0 var(--motion-gold);
+}
+.rn-chapter[open] .rn-chapter-body {
+  animation:motion-archive-open .38s var(--motion-ease);
+}
+@keyframes motion-archive-open {
+  from {opacity:.2;transform:translateY(-7px);}
+  to {opacity:1;transform:none;}
+}
+.audio-node:hover {
+  transform:translateY(-3px);
+  border-color:rgba(242,196,139,.69);
+  box-shadow:0 10px 25px rgba(175,30,67,.19);
+}
+
+/* Small floating control, clear of existing cinematic controls. */
+.cinema-back-top {
+  position:fixed;right:22px;bottom:91px;z-index:70;
+  width:43px;height:43px;display:grid;place-items:center;
+  color:#fff2f6;background:rgba(49,7,22,.88);
+  border:1px solid rgba(245,193,139,.63);border-radius:50%;
+  box-shadow:0 8px 25px rgba(8,1,6,.38);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translate3d(0,14px,0) scale(.84);
+  transition:opacity .3s ease,transform .42s var(--motion-ease),visibility .3s ease,box-shadow .3s ease;
+  cursor:pointer;
+}
+.cinema-back-top.cinema-show {
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translate3d(0,0,0) scale(1);
+}
+.cinema-back-top:hover,.cinema-back-top:focus-visible {
+  box-shadow:0 0 24px rgba(237,65,106,.5);background:#8a173b;
+}
+.cinema-back-top svg {width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;}
+body.cinema-scrolled aside.glass {border-color:rgba(240,160,186,.5)!important;}
+@media(max-width:990px){
+  body.cinema-scrolled aside.glass {border-color:rgba(240,160,186,.3)!important;}
+}
+@media(max-width:660px){
+  /* Existing button toggles display; animate only while nav is open. */
+  #nav.open {display:grid;animation:motion-menu-panel .32s var(--motion-ease) both;transform-origin:top;}
+  #nav.open a {animation:motion-menu-link .38s var(--motion-ease) both;
+    animation-delay:calc(var(--motion-index,0) * 38ms);}
+  .toggle {transition:background .25s ease,border-color .25s ease,transform .24s ease;}
+  .toggle[aria-expanded="true"]{background:rgba(143,16,50,.75);border-color:var(--motion-gold);transform:scale(1.02);}
+  @keyframes motion-menu-panel {from{opacity:0;transform:translateY(-7px) scaleY(.97);}to{opacity:1;transform:none;}}
+  @keyframes motion-menu-link{from{opacity:0;transform:translateX(-9px);}to{opacity:1;transform:none;}}
+  .cinema-back-top {right:14px;bottom:66px;width:39px;height:39px;}
+}
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none!important;}
+  .cinema-reveal,.cinema-back-top,aside nav a,aside nav a::before,aside nav a::after,
+  .rn-chapter[open] .rn-chapter-body, .audio-node, .ronova-top-gallery img {
+    animation:none!important;transition:none!important;
+  }
+  body .cinema-reveal {opacity:1!important;transform:none!important;}
+}
+body.a13x-motion-off .cinema-reveal {opacity:1!important;transform:none!important;transition:none!important;}
+body.a13x-motion-off aside nav a,
+body.a13x-motion-off aside nav a::before,
+body.a13x-motion-off aside nav a::after,
+body.a13x-motion-off .cinema-back-top {animation:none!important;transition:none!important;}
