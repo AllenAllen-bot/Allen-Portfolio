@@ -244,3 +244,59 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
 @media(max-width:700px){.ronova-top-gallery{height:74svh;min-height:450px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#bd214f #260710}
 .ronova-top-gallery img{flex:0 0 100vw;width:100vw;max-width:none;height:100%;object-fit:cover;scroll-snap-align:start}
 }
+
+
+/* Device-adaptive Ronova top imagery: CSS viewport and orientation detection. */
+.ronova-top-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:100%;
+  height:clamp(420px, min(88dvh, 58vw), 1100px);
+  min-height:0;
+  overflow:hidden;
+  isolation:isolate;
+}
+.ronova-top-gallery img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  object-fit:cover;
+  object-position:50% 44%;
+}
+@media (min-width:701px) and (max-aspect-ratio:4/3){
+  .ronova-top-gallery{height:clamp(390px,66dvh,850px)}
+  .ronova-top-gallery img{object-position:50% center}
+}
+@media (max-width:700px){
+  .ronova-top-gallery{
+    display:flex;
+    width:100%;
+    height:clamp(430px, min(78dvh, 185vw), 1000px);
+    min-height:0;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    scroll-padding:0;
+  }
+  .ronova-top-gallery img{
+    flex:0 0 100%;
+    width:100%;
+    height:100%;
+    max-width:100%;
+    object-fit:contain;
+    object-position:center;
+    scroll-snap-align:start;
+    background:#20050e;
+  }
+}
+@media (max-width:700px) and (orientation:landscape){
+  .ronova-top-gallery{height:min(88dvh,700px)}
+  .ronova-top-gallery img{object-fit:contain}
+}
+@media (min-width:1600px) and (min-aspect-ratio:2/1){
+  .ronova-top-gallery{height:min(90dvh,900px)}
+}
