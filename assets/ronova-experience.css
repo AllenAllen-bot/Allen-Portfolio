@@ -7,7 +7,7 @@
 }
 html{scroll-padding-top:20px}
 body{isolation:isolate;overflow-x:hidden}
-body>.a13x-video-bg{z-index:-3;opacity:.65;filter:saturate(1.2) contrast(1.09) brightness(.82);transition:opacity .55s ease,filter .55s ease}
+body>.a13x-video-bg{z-index:-3;opacity:.75;filter:saturate(1.2) contrast(1.09) brightness(.82);transition:opacity .55s ease,filter .55s ease}
 body:before,body.portfolio-gallery-page:before{background:linear-gradient(104deg,rgba(22,2,11,.47),rgba(54,3,23,.25) 54%,rgba(16,2,10,.5))!important;z-index:-2}
 body:after,body.portfolio-gallery-page:after{background:radial-gradient(circle at 76% 9%,rgba(226,51,100,.18),transparent 38%),linear-gradient(180deg,rgba(19,2,11,.07),rgba(12,1,8,.30))!important;z-index:-1}
 body.a13x-focus-mode>.a13x-video-bg{opacity:.17;filter:grayscale(.18) brightness(.57)}
