@@ -240,10 +240,10 @@
      const r=Number(img.dataset.offset),side=Number(img.dataset.side);
      const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23)*1.31;
      // Edge-peek placement: keep most of each decoration outside text columns.
-     const inward=mobile ? size*.18 : Math.min(42,size*.35);
-     const x=side===0 ? inward-size/2 : width-inward+size/2;
+     const inward=mobile ? Math.max(15,size*.24) : Math.max(20,size*.26);
+     const x=side===0 ? inward : width-inward;
      const y=Math.min(height-42,Math.max(80,95+band*(i+.3+(r-.5)*.47)));
-     img.style.left=x+"%";
+     img.style.left=x+"px";
      img.style.top=y+"px";
      img.style.setProperty("--sticker-size",Math.round(size)+"px");
      img.style.setProperty("--sticker-angle",img.dataset.tilt+"deg");
