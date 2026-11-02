@@ -1,0 +1,1 @@
+GitHub Pages static portfolio package. Upload contents to repository root. The PHP/MySQL hobby storefront is excluded deliberately: it does not run on GitHub Pages and could expose sensitive server code. Hobby navigation opens an explanatory page. Host Hobby separately on PHP/MySQL hosting.
