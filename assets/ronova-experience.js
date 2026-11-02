@@ -201,3 +201,54 @@
     }
   });
 })();
+
+
+/* Fifteen uniquely scattered, transparent Ronova stickers on every HTML page. */
+(() => {
+ "use strict";
+ if(document.querySelector(".ronova-sticker-layer"))return;
+ const count=15;
+ const seedText=(location.pathname||"home").toLowerCase();
+ let seed=2166136261;for(let i=0;i<seedText.length;i++){seed^=seedText.charCodeAt(i);seed=Math.imul(seed,16777619)}
+ const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return (seed>>>0)/4294967296};
+ const layer=document.createElement("div");layer.className="ronova-sticker-layer";layer.setAttribute("aria-hidden","true");
+ const stickers=[];
+ for(let i=0;i<count;i++){
+   const img=document.createElement("img");
+   img.className="ronova-sticker";
+   img.alt="";
+   img.decoding="async";
+   img.loading=i<4?"eager":"lazy";
+   img.src="assets/ronova-sticker-"+(i%3+1)+".webp";
+   img.dataset.side=String(i%2);
+   img.dataset.row=String(i);
+   img.dataset.offset=String(random());
+   img.dataset.tilt=String(-23+random()*46);
+   img.dataset.scale=String(.8+random()*.38);
+   img.draggable=false;
+   layer.append(img);stickers.push(img);
+ }
+ document.body.append(layer);
+ let queued=false;
+ function placeStickers(){
+   const mobile=innerWidth<700;
+   const height=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,innerHeight);
+   layer.style.height=height+"px";
+   const band=Math.max(63,(height-175)/count);
+   const width=innerWidth;
+   stickers.forEach((img,i)=>{
+     const r=Number(img.dataset.offset),side=Number(img.dataset.side);
+     const x=mobile ? (side===0 ? 7+r*7 : 85+r*8) : (side===0 ? 4+r*13 : 81+r*15);
+     const y=Math.min(height-42,Math.max(80,95+band*(i+.3+(r-.5)*.47)));
+     img.style.left=x+"%";
+     img.style.top=y+"px";
+     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23);
+     img.style.setProperty("--sticker-size",Math.round(size)+"px");
+     img.style.setProperty("--sticker-angle",img.dataset.tilt+"deg");
+   });
+ }
+ const schedule=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;placeStickers()})};
+ addEventListener("load",schedule,{once:true});
+ addEventListener("resize",schedule,{passive:true});
+ placeStickers();
+})();
