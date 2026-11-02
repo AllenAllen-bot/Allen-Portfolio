@@ -300,3 +300,9 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
 @media (min-width:1600px) and (min-aspect-ratio:2/1){
   .ronova-top-gallery{height:min(90dvh,900px)}
 }
+
+
+/* All three hero images visible together on EVERY device: no swipe or crop. */
+@media all {.ronova-top-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;scroll-snap-type:none!important;background:transparent!important}}
+.ronova-top-gallery img{display:block!important;width:100%!important;height:auto!important;max-width:100%!important;min-width:0!important;min-height:0!important;flex:none!important;object-fit:contain!important;object-position:center!important;aspect-ratio:797/1536;}
+@media(max-width:700px){.ronova-top-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;height:auto!important;min-height:0!important;overflow:hidden!important;scroll-snap-type:none!important}.ronova-top-gallery img{flex:none!important;width:100%!important;height:auto!important;object-fit:contain!important;aspect-ratio:797/1536;}}
