@@ -62,7 +62,7 @@ body.portfolio-gallery-page:after{display:block;background:radial-gradient(ellip
 
 /* A13X: local looping video background, visible at 65% */
 body{background:#0c0207;}
-body>.a13x-video-bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-3;opacity:.65;pointer-events:none;filter:saturate(1.2);}
+body>.a13x-video-bg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-3;opacity:.75;pointer-events:none;filter:saturate(1.2);}
 body:before,body.portfolio-gallery-page:before{content:"";display:block;position:fixed;inset:0;z-index:-2;background:linear-gradient(95deg,rgba(24,2,10,.26),rgba(59,5,23,.22));pointer-events:none;}
 body:after,body.portfolio-gallery-page:after{content:"";display:block;position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 82% 15%,rgba(240,26,73,.14),transparent 44%);pointer-events:none;}
 @media(prefers-reduced-motion:reduce){body>.a13x-video-bg{opacity:.4;}}
@@ -87,4 +87,4 @@ body:after,body.portfolio-gallery-page:after{content:"";display:block;position:f
   text-shadow:0 1px 8px rgba(0,0,0,.65);
 }
 /* Keep video at the requested 65% opacity. */
-body>.a13x-video-bg{opacity:.65}
+body>.a13x-video-bg{opacity:.75}
