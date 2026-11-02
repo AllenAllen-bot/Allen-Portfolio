@@ -232,3 +232,7 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
 
 /* Visible edge decals stay outside content text and never capture taps. */
 .ronova-sticker-layer{z-index:3!important;pointer-events:none!important}
+
+/* Visible transparent decals: front of panes, not interactive. Text-aware positioning is handled by JS. */
+.ronova-sticker-layer{z-index:8!important;pointer-events:none!important;overflow:hidden!important}
+.ronova-sticker{opacity:.96!important;pointer-events:none!important;background:transparent!important}
