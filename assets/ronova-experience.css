@@ -229,3 +229,6 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
 /* Keep decorative stickers behind portfolio content and navigation. */
 .ronova-sticker-layer{z-index:1!important;pointer-events:none!important}
 .layout{position:relative;z-index:2!important}
+
+/* Visible edge decals stay outside content text and never capture taps. */
+.ronova-sticker-layer{z-index:3!important;pointer-events:none!important}
