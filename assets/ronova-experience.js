@@ -95,14 +95,14 @@
       portrait.parentNode.insertBefore(wrap,portrait);
       wrap.append(portrait);
       const label=document.createElement("div");label.className="a13x-portrait-tag";
-      label.textContent="Ronova · visual inspiration";wrap.append(label);
+      label.textContent="Ronova";wrap.append(label);
     }
     const heroText=hero.firstElementChild;
     if(heroText){
       const button=document.createElement("button");
       button.type="button";button.className="a13x-hero-seal";
-      button.innerHTML=sigil()+"<span>THE SEVEN-PETAL SIGIL · EXPLORE ↗</span>";
-      button.setAttribute("aria-label","Discover the Ronova-inspired design language");
+      button.innerHTML=sigil()+"<span>SEVEN PETALLED EYES</span>";
+      button.setAttribute("aria-label","Seven Petalled Eyes: learn about the Ronova-themed design");
       heroText.append(button);
       const dialog=document.createElement("dialog");
       dialog.className="a13x-design-note";
@@ -242,7 +242,7 @@
      const y=Math.min(height-42,Math.max(80,95+band*(i+.3+(r-.5)*.47)));
      img.style.left=x+"%";
      img.style.top=y+"px";
-     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23);
+     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23)*1.31;
      img.style.setProperty("--sticker-size",Math.round(size)+"px");
      img.style.setProperty("--sticker-angle",img.dataset.tilt+"deg");
    });
