@@ -195,3 +195,14 @@ nav a .fa{color:var(--rx-gold)}
  .a13x-timeline:before{left:17px}.a13x-timeline-item .tile{padding:18px}
  .a13x-experience-foot{display:block}.a13x-experience-foot .btn{margin-top:18px}
 }
+
+
+/* Transparent scattered Ronova stickers: fifteen per page, no tile backgrounds */
+.ronova-sticker-layer{position:absolute;inset:0;z-index:7;pointer-events:none;overflow:hidden}
+.ronova-sticker{position:absolute;display:block;width:var(--sticker-size,80px);height:auto;max-width:none;
+ background:none!important;border:0!important;box-shadow:none!important;object-fit:contain;
+ opacity:.92;transform:translate(-50%,-50%) rotate(var(--sticker-angle,0deg));
+ filter:drop-shadow(0 4px 9px rgba(24,0,12,.38));pointer-events:none;user-select:none;
+ -webkit-user-drag:none;}
+@media(max-width:700px){.ronova-sticker{opacity:.88;filter:drop-shadow(0 2px 5px rgba(24,0,12,.38))}}
+@media(prefers-reduced-motion:reduce){.ronova-sticker{animation:none!important}}
