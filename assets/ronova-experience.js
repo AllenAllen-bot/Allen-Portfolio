@@ -203,54 +203,87 @@
 })();
 
 
-/* Fifteen uniquely scattered, transparent Ronova stickers on every HTML page. */
+/* Ronova sticker scatter: responsive to content and newly randomized on each refresh. */
 (() => {
- "use strict";
- if(document.querySelector(".ronova-sticker-layer"))return;
- const count=15;
- const seedText=(location.pathname||"home").toLowerCase();
- let seed=2166136261;for(let i=0;i<seedText.length;i++){seed^=seedText.charCodeAt(i);seed=Math.imul(seed,16777619)}
- const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return (seed>>>0)/4294967296};
- const layer=document.createElement("div");layer.className="ronova-sticker-layer";layer.setAttribute("aria-hidden","true");
- const stickers=[];
- for(let i=0;i<count;i++){
-   const img=document.createElement("img");
-   img.className="ronova-sticker";
-   img.alt="";
-   img.decoding="async";
-   img.loading=i<4?"eager":"lazy";
-   img.src="assets/ronova-sticker-"+(i%3+1)+".webp";
-   img.dataset.side=String(i%2);
-   img.dataset.row=String(i);
-   img.dataset.offset=String(random());
-   img.dataset.tilt=String(-23+random()*46);
-   img.dataset.scale=String(.8+random()*.38);
-   img.draggable=false;
-   layer.append(img);stickers.push(img);
- }
- document.body.append(layer);
- let queued=false;
- function placeStickers(){
-   const mobile=innerWidth<700;
-   const height=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,innerHeight);
-   layer.style.height=height+"px";
-   const band=Math.max(63,(height-175)/count);
-   const width=innerWidth;
-   stickers.forEach((img,i)=>{
-     const r=Number(img.dataset.offset),side=Number(img.dataset.side);
-     const size=(mobile?46:72)*Number(img.dataset.scale)*(mobile?1:1.23)*1.31;
-     // Edge-peek placement: keep most of each decoration outside text columns.
-     const inward=mobile ? Math.max(15,size*.24) : Math.max(20,size*.26);
-     const x=side===0 ? inward : width-inward;
-     const y=Math.min(height-42,Math.max(80,95+band*(i+.3+(r-.5)*.47)));
-     img.style.left=x+"px";
-     img.style.top=y+"px";
-     img.style.setProperty("--sticker-size",Math.round(size)+"px");
-     img.style.setProperty("--sticker-angle",img.dataset.tilt+"deg");
-   });
- }
- const schedule=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;placeStickers()})};
- addEventListener("load",schedule,{once:true});
- addEventListener("resize",schedule,{passive:true});
- placeStickers();
+  "use strict";
+  if (document.querySelector(".ronova-sticker-layer")) return;
+  const count=15;
+  const layer=document.createElement("div");
+  layer.className="ronova-sticker-layer";
+  layer.setAttribute("aria-hidden","true");
+  document.body.append(layer);
+  const stickers=Array.from({length:count},(_,i)=>{
+    const image=document.createElement("img");
+    image.className="ronova-sticker";
+    image.src="assets/ronova-sticker-"+(i%3+1)+".webp";
+    image.alt="";image.decoding="async";image.draggable=false;
+    image.loading="eager";
+    image.dataset.turn=String(Math.round(-24+Math.random()*48));
+    image.dataset.grow=String(.85+Math.random()*.30);
+    layer.append(image);
+    return image;
+  });
+  let pending=false;
+  const clamp=(x,min,max)=>Math.min(max,Math.max(min,x));
+  function protectedRects(){
+    const root=document.querySelector(".layout");
+    if(!root)return [];
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+      acceptNode(n){return n.textContent.trim() && !n.parentElement.closest("script,style") ? NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}
+    });
+    const rects=[];let node;
+    while((node=walker.nextNode())){
+      const range=document.createRange();range.selectNodeContents(node);
+      for(const b of range.getClientRects())if(b.width>3&&b.height>3)rects.push({x:b.left,y:b.top+scrollY,w:b.width,h:b.height});
+      range.detach?.();
+    }
+    for(const el of root.querySelectorAll("button,a,input,textarea,select,.hero-image")){
+      const b=el.getBoundingClientRect();
+      if(b.width>0&&b.height>0)rects.push({x:b.left,y:b.top+scrollY,w:b.width,h:b.height});
+    }
+    return rects;
+  }
+  function render(){
+    const W=document.documentElement.clientWidth;
+    const H=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,innerHeight);
+    layer.style.height=H+"px";
+    const narrow=W<600;
+    const R=protectedRects();
+    const used=[];
+    const base=narrow?62:W<980?89:112;
+    const spacing=H/count;
+    stickers.forEach((img,i)=>{
+      const size=Math.round(base*Number(img.dataset.grow));
+      // Each sticker is visibly inside the viewport, biased toward alternate edges.
+      const side=i%2;
+      const x=side===0?size*.48+4:W-size*.48-4;
+      const target=clamp((i+.35+Math.random()*.25)*spacing,55,H-35);
+      let best=null;
+      for(let k=0;k<54;k++){
+        const dy=k===0?0:(k%2?-1:1)*Math.ceil(k/2)*14;
+        const cy=clamp(target+dy,Math.max(25,size*.38),H-Math.max(25,size*.38));
+        const box={x:x-size*.48,y:cy-size*.52,w:size*.96,h:size*1.04};
+        const intersections=R.reduce((sum,r)=>{
+          const overlapW=Math.max(0,Math.min(box.x+box.w,r.x+r.w)-Math.max(box.x,r.x));
+          const overlapH=Math.max(0,Math.min(box.y+box.h,r.y+r.h)-Math.max(box.y,r.y));
+          return sum+overlapW*overlapH;
+        },0);
+        const near=used.reduce((sum,v)=>sum+(Math.abs(v.y-cy)<size*.88&&v.side===side?6000:0),0);
+        const score=intersections*20+near+Math.abs(dy)*.5;
+        if(!best||score<best.score)best={cy,score};
+        if(score<10)break;
+      }
+      img.style.left=x+"px";
+      img.style.top=best.cy+"px";
+      img.style.setProperty("--sticker-size",size+"px");
+      img.style.setProperty("--sticker-angle",img.dataset.turn+"deg");
+      used.push({side,y:best.cy});
+    });
+  }
+  function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;render()})}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});
+  addEventListener("load",schedule,{once:true});
+  addEventListener("resize",schedule,{passive:true});
+  if(document.fonts?.ready)document.fonts.ready.then(schedule);
+  render();
 })();
