@@ -34,7 +34,7 @@
   skip.className="a13x-skip";skip.href="#a13x-main";skip.textContent="Skip to portfolio content";
   body.prepend(skip);
   const main=document.querySelector("main");
-  if (main) main.id="a13x-main";
+  if (main) { if (!main.id) main.id="a13x-main"; skip.href="#"+main.id; main.setAttribute("tabindex","-1"); }
 
   const progress=document.createElement("div");
   progress.className="a13x-progress";progress.setAttribute("aria-hidden","true");
