@@ -225,3 +225,7 @@ body .tile,body .project,body .testimonial,body .contact-card,body .form,body .s
 body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a13x-gallery-item{
  background:rgba(92,4,27,.18)!important;
 }
+
+/* Keep decorative stickers behind portfolio content and navigation. */
+.ronova-sticker-layer{z-index:1!important;pointer-events:none!important}
+.layout{position:relative;z-index:2!important}
