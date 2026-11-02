@@ -129,7 +129,7 @@
       '<a class="a13x-mosaic-link" href="skills.html"><span class="a13x-mosaic-index">02 / BUILD</span><div><h3>Programming</h3><p>Web technologies, languages, and evolving skills.</p></div><span class="a13x-mosaic-cta">View toolkit →</span></a>'+
       '<a class="a13x-mosaic-link" href="https://soniccrest-audio.netlify.app/" target="_blank" rel="noopener noreferrer"><span class="a13x-mosaic-index">03 / ENGINEER</span><div><h3>Sound Engineering</h3><p>Live sound, pro audio systems, and technical production.</p></div><span class="a13x-mosaic-cta">Visit audio showcase ↗</span></a>'+
       '</div>';
-    hero.insertAdjacentElement("afterend",mosaic);
+    (document.querySelector(".ronova-lore") || hero).insertAdjacentElement("afterend",mosaic);
   }
   function burst(el){
     const rect=el.getBoundingClientRect();
