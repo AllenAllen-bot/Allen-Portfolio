@@ -343,3 +343,15 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
   overflow:visible!important;
  }
 }
+
+
+/* Ronova canonical lore section beneath homepage portrait. */
+.ronova-lore{position:relative;padding:clamp(24px,4vw,44px);border:1px solid rgba(244,174,193,.34);border-radius:22px;background:rgba(55,5,22,.52);backdrop-filter:blur(1.2px);-webkit-backdrop-filter:blur(1.2px);box-shadow:0 18px 45px rgba(20,2,13,.22)}
+.ronova-lore-heading h2{font:800 clamp(28px,4vw,47px)/1.14 'Outfit',sans-serif;color:#fff0f4;margin:13px 0}
+.ronova-lore-intro{color:#f0c18d;font-size:clamp(15px,1.6vw,19px)}
+.ronova-lore-content{display:grid;gap:16px;max-width:960px}
+.ronova-lore-content p{margin:0;color:#f5dde5;line-height:1.9;font-size:clamp(15px,1.5vw,18px);text-shadow:0 1px 7px rgba(0,0,0,.55)}
+.ronova-lore-content p:first-child::first-letter{color:#f4bd94;font-weight:800;font-size:1.45em}
+.ronova-lore-sources{margin:25px 0 0;padding-top:15px;border-top:1px solid rgba(245,180,200,.25);font-size:12px;line-height:1.7;color:#ebbacb}
+.ronova-lore-sources a{color:#f2ca95;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:700px){.ronova-lore{padding:20px 17px;border-radius:17px}.ronova-lore-content{gap:17px}}
