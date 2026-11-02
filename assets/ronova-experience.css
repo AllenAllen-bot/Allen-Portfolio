@@ -166,3 +166,32 @@ nav a .fa{color:var(--rx-gold)}
 @media(prefers-contrast:more){
  body .glass,body aside.glass,body .main.glass,body.portfolio-gallery-page .main{background:rgba(15,3,10,.94)!important}
 }
+
+
+/* A13X // CHRONICLE (Experience page) */
+.a13x-experience-head{position:relative;padding:16px 0 20px}
+.a13x-experience-head:after{content:"";position:absolute;right:5%;top:0;width:130px;height:130px;border-radius:50%;
+ border:1px solid rgba(240,195,137,.22);box-shadow:0 0 0 18px rgba(211,49,88,.045),0 0 0 42px rgba(211,49,88,.027);pointer-events:none}
+.a13x-experience-head .title{font-size:clamp(2.8rem,6vw,5.7rem);max-width:790px}
+.a13x-timeline{position:relative;display:grid;gap:20px;padding-left:13px}
+.a13x-timeline:before{content:"";position:absolute;top:38px;bottom:46px;left:36px;width:2px;
+ background:linear-gradient(#e9c78e,#c52357,rgba(194,31,78,.1))}
+.a13x-timeline-item{display:grid;grid-template-columns:55px minmax(0,1fr);gap:16px;align-items:start}
+.a13x-timeline-item .tile{position:relative;padding:25px;border-radius:19px}
+.a13x-timeline-item .tile h2{font:700 clamp(21px,2.8vw,30px)/1.13 'Outfit';margin:10px 0}
+.a13x-timeline-item .tile p{max-width:720px}
+.a13x-timeline-node{border:1px solid rgba(241,197,143,.7);border-radius:50%;display:grid;place-items:center;
+ background:linear-gradient(135deg,#64132e,#210815);color:#f6d3a2;font-size:11px;font-weight:800;
+ letter-spacing:.08em;width:48px;height:48px;z-index:1;box-shadow:0 0 24px rgba(229,45,98,.25)}
+.a13x-inline-link{display:inline-flex;color:#f7d39b;font-weight:700;font-size:14px;margin-top:10px;
+ border-bottom:1px solid rgba(247,202,149,.43);padding-bottom:3px}
+.a13x-inline-link:hover{color:#fff}
+.a13x-experience-foot{margin-top:24px!important;padding:24px;display:flex;align-items:center;gap:15px;justify-content:space-between}
+.a13x-experience-foot h2{font:700 clamp(22px,3vw,32px) 'Outfit';margin:8px 0}
+.a13x-experience-foot p{max-width:690px;margin:0}
+.a13x-experience-foot .btn{flex:none}
+@media(max-width:700px){.a13x-timeline{padding-left:0}.a13x-timeline-item{grid-template-columns:40px minmax(0,1fr);gap:8px}
+ .a13x-timeline-node{width:35px;height:35px;font-size:10px}
+ .a13x-timeline:before{left:17px}.a13x-timeline-item .tile{padding:18px}
+ .a13x-experience-foot{display:block}.a13x-experience-foot .btn{margin-top:18px}
+}
