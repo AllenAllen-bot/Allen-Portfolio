@@ -1,0 +1,29 @@
+
+/* Ronova archive + audio dashboard, isolated from the existing video/sticker styles. */
+.rn-archive{display:grid;gap:12px;margin-top:22px}
+.rn-chapter{border:1px solid rgba(246,184,204,.32);background:rgba(55,6,24,.45);border-radius:15px;overflow:hidden}
+.rn-chapter summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:13px;padding:17px 20px;font:700 clamp(16px,2vw,20px) 'Outfit',sans-serif;color:#fff2f6}
+.rn-chapter summary::-webkit-details-marker{display:none}
+.rn-chapter summary:before{content:attr(data-index);color:#f0c58e;font:700 12px 'DM Sans',sans-serif;letter-spacing:.13em}
+.rn-chapter summary:after{content:"+";margin-left:auto;color:#f5c78f;font-size:24px}
+.rn-chapter[open] summary:after{content:"−"}
+.rn-chapter summary:hover,.rn-chapter[open] summary{background:rgba(153,18,57,.28)}
+.rn-chapter .rn-chapter-body{padding:2px 20px 21px;line-height:1.85;color:#f1d9e2}
+.rn-archive-controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.rn-archive-controls button,.audio-control{font:600 14px 'DM Sans',sans-serif;border:1px solid rgba(244,188,202,.4);border-radius:10px;background:rgba(68,13,30,.65);color:#fff4f7;padding:10px 14px;cursor:pointer}
+.rn-archive-controls button:hover,.audio-control:hover{border-color:#eec38a;background:rgba(135,23,54,.65)}
+.rn-chapter summary:focus-visible,.rn-archive-controls button:focus-visible,.audio-control:focus-visible{outline:2px solid #f2cb91;outline-offset:3px}
+.audio-dashboard{margin-top:34px;border:1px solid rgba(247,188,204,.34);border-radius:22px;padding:clamp(18px,3vw,30px);background:rgba(37,5,18,.56)}
+.audio-dashboard h2{font:800 clamp(26px,3.5vw,39px) 'Outfit',sans-serif;margin:9px 0}
+.audio-dashboard .audio-controls{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+.audio-dashboard label{font-size:13px;color:#f2cfdd;display:grid;gap:6px;flex:1;min-width:170px}
+.audio-dashboard select{width:100%;background:#2c1020;color:white;padding:12px;border-radius:10px;border:1px solid #a94b66;font:inherit}
+.audio-chain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch;margin-top:21px}
+.audio-node{padding:18px 13px;border:1px solid rgba(246,183,206,.4);background:rgba(105,20,46,.34);border-radius:15px;min-width:0}
+.audio-node span{color:#f2cc8e;font-size:11px;letter-spacing:.13em;font-weight:800}
+.audio-node h3{font:700 18px 'Outfit';margin:8px 0}
+.audio-node p{font-size:13px;margin:0;line-height:1.65}
+.audio-dashboard .audio-detail{margin:18px 0;border-left:3px solid #e8bd82;padding:10px 14px;background:rgba(95,19,46,.25);color:#f9e4ed;min-height:80px}
+.audio-dashboard .audio-note{font-size:12px;color:#e2bcca}
+@media(max-width:850px){.audio-chain{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.audio-chain{grid-template-columns:1fr}.rn-chapter summary{padding:14px}.rn-chapter .rn-chapter-body{padding:2px 14px 16px}}
