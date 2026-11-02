@@ -206,3 +206,22 @@ nav a .fa{color:var(--rx-gold)}
  -webkit-user-drag:none;}
 @media(max-width:700px){.ronova-sticker{opacity:.88;filter:drop-shadow(0 2px 5px rgba(24,0,12,.38))}}
 @media(prefers-reduced-motion:reduce){.ronova-sticker{animation:none!important}}
+
+/* Crimson red dominant palette: 88% crimson hue emphasis, preserving video opacity and blur. */
+:root{--rx-crimson:#df123e;--rx-ember:#ac082d;--red:#df123e;--rose:#ffb2c0;--rx-outline:rgba(239,65,99,.34)}
+body:before,body.portfolio-gallery-page:before{
+ background:linear-gradient(104deg,rgba(112,4,28,.47),rgba(155,7,41,.25) 54%,rgba(101,3,25,.50))!important;
+}
+body:after,body.portfolio-gallery-page:after{
+ background:radial-gradient(circle at 76% 9%,rgba(229,18,63,.18),transparent 38%),linear-gradient(180deg,rgba(95,3,24,.07),rgba(70,1,19,.30))!important;
+}
+body .glass,body aside.glass,body .main.glass,body.portfolio-gallery-page .main,body.a13x-gallery .main{
+ background:rgba(75,4,24,.13)!important;
+}
+body.a13x-focus-mode .glass,body.a13x-focus-mode aside.glass,body.a13x-focus-mode .main.glass,body.a13x-focus-mode.portfolio-gallery-page .main,body.a13x-focus-mode.a13x-gallery .main{
+ background:rgba(83,5,25,.72)!important;
+}
+body .tile,body .project,body .testimonial,body .contact-card,body .form,body .skill-level-card,
+body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a13x-gallery-item{
+ background:rgba(92,4,27,.18)!important;
+}
