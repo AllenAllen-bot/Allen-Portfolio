@@ -22,18 +22,18 @@ body.a13x-motion-off{scroll-behavior:auto}
 body.a13x-focus-mode .a13x-ambient,body.a13x-motion-off .a13x-ambient{opacity:.22}
 body .glass,body aside.glass,body .main.glass,body.portfolio-gallery-page .main,body.a13x-gallery .main{
  background:var(--rx-glass)!important;
- backdrop-filter:blur(12px) saturate(1.14)!important;
- -webkit-backdrop-filter:blur(12px) saturate(1.14)!important;
+ backdrop-filter:blur(10.8px) saturate(1.14)!important;
+ -webkit-backdrop-filter:blur(10.8px) saturate(1.14)!important;
  border:1px solid var(--rx-outline)!important;
  box-shadow:0 20px 70px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,222,230,.07)!important;
 }
 body.a13x-focus-mode .glass,body.a13x-focus-mode aside.glass,body.a13x-focus-mode .main.glass,body.a13x-focus-mode.portfolio-gallery-page .main,body.a13x-focus-mode.a13x-gallery .main{
- background:var(--rx-glass-focus)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;
+ background:var(--rx-glass-focus)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
 }
 body .tile,body .project,body .testimonial,body .contact-card,body .form,body .skill-level-card,
 body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a13x-gallery-item{
  background:rgba(31,5,17,.39)!important;
- backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important;
+ backdrop-filter:blur(6.3px)!important;-webkit-backdrop-filter:blur(6.3px)!important;
  border-color:rgba(246,175,199,.23)!important;
  transition:background .24s,border-color .24s,box-shadow .24s,transform .3s;
 }
