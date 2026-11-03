@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout portfolio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Download reference photos to repository
         shell: bash
         run: |
@@ -30,11 +32,13 @@ jobs:
           while IFS='|' read -r filename url; do
             [ -z "$filename" ] && continue
             target="assets/portfolio-photos/$filename"
-            if [ -s "$target" ] && [ "$filename" != "cars-04.jpg" ]; then continue; fi
-            if ! curl --fail --location --silent --show-error --retry 3 --connect-timeout 15 --max-time 60 "$url" -o "$target"; then
-              echo "::warning::Failed to download $filename; website can use its remote fallback"
-              rm -f "$target"
+            if [ -s "$target" ]; then continue; fi
+            if ! curl --fail --location --silent --show-error --retry 3 --connect-timeout 15 --max-time 60 "$url" -o "${target}.tmp"; then
+              echo "::warning::Failed to download $filename"
+              rm -f "${target}.tmp"
               failures=$((failures+1))
+            else
+              mv "${target}.tmp" "$target"
             fi
           done <<'PHOTO_LIST'
           cars-01.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg&fit=crop&w=1000&q=78
@@ -55,13 +59,34 @@ jobs:
           plants-02.jpg|https://images.unsplash.com/photo-1501004318641-b39e6451bec6?fm=jpg&fit=crop&w=1000&q=78
           PHOTO_LIST
           echo "Failed downloads: $failures"
+          if (( failures > 0 )); then
+            echo "::error::One or more reference photos failed to download"
+            exit 1
+          fi
       - name: Commit cached photos
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/portfolio-photos/
-          if ! git diff --cached --quiet; then
-            git commit -m "Cache curated Portfolio category photos locally"
-            git push origin HEAD:main
+          if git diff --cached --quiet; then
+            echo "All cached photos are already present; no commit needed"
+            exit 0
           fi
+          git commit -m "Cache curated Portfolio category photos locally"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo "::error::Cache changes conflict with newer commits on main; refusing to overwrite"
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              echo "Cached photos pushed successfully"
+              exit 0
+            fi
+            echo "::warning::Main advanced during push (attempt $attempt); retrying safely"
+          done
+          echo "::error::Could not push without conflicting with concurrent updates"
+          exit 1
