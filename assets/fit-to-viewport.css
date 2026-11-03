@@ -1,0 +1,290 @@
+/* Allen Portfolio: fluid viewport fit for every page/browser tab.
+   No forced scaling or height clipping. Allow vertical scrolling for real content. */
+:root{
+  --fit-gutter:clamp(10px,1.35vw,24px);
+  --fit-gap:clamp(12px,1.65vw,28px);
+}
+html,body{width:100%;max-width:100%;overflow-x:clip}
+body{min-height:100vh;min-height:100dvh}
+body .layout,
+body.portfolio-gallery-page .layout{
+  box-sizing:border-box;
+  display:grid;
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin:0 auto;
+  padding:var(--fit-gutter);
+  gap:var(--fit-gap);
+  grid-template-columns:clamp(210px,17.5vw,275px) minmax(0,1fr);
+  min-height:100vh;
+  min-height:100dvh;
+}
+body .layout > aside{
+  box-sizing:border-box;
+  min-width:0;
+  width:100%;
+  height:auto;
+  min-height:0;
+  max-height:calc(100dvh - var(--fit-gutter) - var(--fit-gutter));
+  overflow-y:auto;
+  overflow-x:hidden;
+  position:sticky;
+  top:var(--fit-gutter);
+  overscroll-behavior:contain;
+}
+body .layout > .main,
+body.portfolio-gallery-page .layout > .main,
+body.a13x-gallery .layout > .main{
+  box-sizing:border-box;
+  min-width:0;
+  width:100%;
+  max-width:100%;
+  min-height:calc(100dvh - var(--fit-gutter) - var(--fit-gutter));
+  padding:clamp(17px,2.9vw,48px);
+}
+body .layout > .main > *,
+body .main .section,
+body .main .tile-grid,
+body .main .project-grid,
+body .main .contact-grid,
+body .main .skill-level-grid,
+body .main .sound-showcase,
+body .main .audio-dashboard,
+body .main .audio-chain,
+body .main .rn-archive,
+body .main .a13x-mosaic,
+body .main .ronova-top-gallery{
+  box-sizing:border-box;
+  min-width:0;
+  max-width:100%;
+}
+body .main img,body .main video,body .main iframe{
+  max-width:100%;
+}
+body .main p,body .main h1,body .main h2,body .main h3,
+body .main .tile,body .main .audio-node,
+body .main .contact-card,body .main .form,
+body .main .skill-level-card,body .main .rn-chapter{
+  min-width:0;
+  overflow-wrap:break-word;
+}
+body .main a,body .main code{overflow-wrap:anywhere}
+
+/* Home: keep the entire name together as one responsive heading.
+   The surname may wrap immediately below Allen when space is tight. */
+body .main .hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  align-items:start;
+  gap:clamp(16px,2.5vw,38px);
+  width:100%;
+  min-width:0;
+}
+body .main .hero > .allen-hero-content,
+body .main .hero > .allen-hero-right{
+  min-width:0;
+  max-width:100%;
+}
+body .main .hero .allen-eye-home-logo{
+  width:clamp(155px,18vw,255px);
+  max-width:72%;
+  margin:0 auto clamp(12px,1.5vw,20px);
+  display:block;
+  transform:none!important;
+}
+body .main .hero h1.allen-home-name{
+  box-sizing:border-box;
+  width:100%;
+  max-width:100%;
+  margin:0 auto;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:baseline;
+  column-gap:.16em;
+  row-gap:.025em;
+  font-size:clamp(31px,3.05vw,57px);
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+body .main .hero h1.allen-home-name .allen-home-surname{
+  display:inline!important;
+  margin:0!important;
+  padding:0!important;
+  font:inherit;
+  white-space:nowrap;
+  color:#ffd3df!important;
+  -webkit-text-fill-color:#ffd3df!important;
+  background:none!important;
+  -webkit-background-clip:initial!important;
+  background-clip:initial!important;
+}
+body .main .hero .ronova-top-gallery{
+  width:100%!important;
+  max-width:100%!important;
+  margin:clamp(20px,2.5vw,38px) 0 clamp(22px,3.2vw,42px) auto!important;
+}
+body .main .hero .allen-hero-right{
+  width:100%;
+  padding-top:clamp(90px,10.5vw,160px);
+}
+body .main .hero .allen-hero-right .a13x-portrait-wrap{
+  width:100%;
+  max-width:100%;
+}
+body .main .hero .allen-hero-right .hero-image{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  min-height:0;
+  aspect-ratio:3/4;
+  object-fit:contain;
+}
+body .main .hero .ronova-top-gallery img{
+  display:block;
+  min-width:0!important;
+  max-width:100%!important;
+  height:auto!important;
+}
+
+/* Photo filters are browser-width responsive tabs, not overflowing rows. */
+body .portfolio-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:clamp(6px,.7vw,12px);
+  width:100%;
+  max-width:100%;
+}
+body .portfolio-tabs .gallery-filter{
+  max-width:100%;
+  min-width:0;
+  white-space:normal;
+}
+body .gallery-heading{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  max-width:100%;
+}
+body .gallery-heading > *{min-width:0;max-width:100%}
+body .masonry-gallery{
+  max-width:100%;
+  column-count:4;
+  column-width:185px;
+  column-gap:clamp(10px,1.5vw,24px);
+}
+body .masonry-item,body .masonry-item img{
+  max-width:100%;
+  min-width:0;
+}
+body .audio-dashboard select,
+body .form input,body .form textarea{
+  box-sizing:border-box;
+  max-width:100%;
+}
+body .sound-showcase{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+body .sound-showcase > *{min-width:0}
+
+@media(max-width:1200px){
+  body .layout,body.portfolio-gallery-page .layout{
+    grid-template-columns:clamp(190px,19vw,235px) minmax(0,1fr);
+  }
+  body .main .hero h1.allen-home-name{font-size:clamp(29px,3vw,43px)}
+  body .contact-grid{grid-template-columns:minmax(0,1fr)}
+  body .masonry-gallery{column-count:3;column-width:175px}
+}
+@media(max-width:990px){
+  body .layout,body.portfolio-gallery-page .layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    padding:clamp(8px,1.8vw,16px);
+    gap:clamp(9px,1.5vw,16px);
+  }
+  body .layout > aside{
+    position:relative;
+    top:auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    overflow:visible;
+  }
+  body .layout > .main,
+  body.portfolio-gallery-page .layout > .main,
+  body.a13x-gallery .layout > .main{min-height:0}
+  body .layout > aside nav{
+    grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+    gap:8px;
+  }
+  body .layout > aside nav a{white-space:normal}
+  body .main .hero{
+    grid-template-columns:minmax(0,1fr);
+    gap:clamp(18px,3vw,28px);
+  }
+  body .main .hero h1.allen-home-name{
+    font-size:clamp(34px,5.7vw,60px);
+  }
+  body .main .hero .allen-eye-home-logo{
+    width:clamp(160px,24vw,240px);
+  }
+  body .main .hero .allen-hero-right{
+    width:min(100%,520px);
+    max-width:100%;
+    margin:0 auto;
+    padding-top:0;
+  }
+  body .main .hero .ronova-top-gallery{
+    margin:clamp(14px,2vw,28px) 0 clamp(18px,3vw,32px) auto!important;
+  }
+}
+@media(max-width:660px){
+  body .layout,body.portfolio-gallery-page .layout{
+    padding:clamp(7px,2vw,12px);
+    gap:10px;
+  }
+  body .layout > .main,
+  body.portfolio-gallery-page .layout > .main,
+  body.a13x-gallery .layout > .main{
+    padding:clamp(14px,4vw,22px);
+  }
+  body .layout > aside nav:not(.open){display:none}
+  body .layout > aside nav.open{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body .main .hero h1.allen-home-name{
+    font-size:clamp(29px,7vw,43px);
+    line-height:1.12;
+  }
+  body .main .hero .allen-eye-home-logo{width:min(62vw,215px)}
+  body .main .hero .allen-hero-right{width:min(100%,440px)}
+  body .main .ronova-top-gallery{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:clamp(5px,1.5vw,10px)!important;
+  }
+  body .masonry-gallery{
+    column-count:2;
+    column-width:128px;
+    column-gap:10px;
+  }
+  body .portfolio-tabs .gallery-filter{flex:1 1 auto}
+  body .audio-dashboard .audio-controls{grid-template-columns:minmax(0,1fr)}
+  body .sound-showcase{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:400px){
+  body .layout > aside nav.open{grid-template-columns:minmax(0,1fr)}
+  body .main .hero h1.allen-home-name{
+    font-size:clamp(28px,8vw,34px);
+  }
+  body .masonry-gallery{column-count:2;column-width:116px}
+}
+@media(max-height:600px) and (min-width:991px){
+  body .layout > aside{overflow-y:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  body .main .hero h1.allen-home-name{transform:none!important}
+}
