@@ -360,3 +360,11 @@ body .sound-showcase,body .gallery-projects article,body .gallery-empty,body .a1
 .a13x-hero-seal .a13x-golden-iris{width:42px;height:42px;flex:0 0 42px}
 .a13x-seal-mini .a13x-golden-iris{width:100%;height:100%}
 .a13x-design-note .a13x-golden-iris{width:96px;height:96px;margin:0 auto 15px}
+
+/* Temporary sitewide sticker pause. Retain images and placement code for restoration. */
+.ronova-sticker-layer,
+.ronova-sticker,
+img[src*="ronova-sticker-"] {
+  display: none !important;
+  visibility: hidden !important;
+}
