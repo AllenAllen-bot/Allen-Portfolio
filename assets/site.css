@@ -99,12 +99,25 @@ body>.a13x-video-bg{opacity:.75}
  flex:none;display:block;
 }
 .logo.allen-eye-brand .allen-eye-brand-name{color:#fff}
-.allen-eye-home-logo{
- display:block;width:min(100%,480px);height:auto;aspect-ratio:2.15/1;
- object-fit:cover;object-position:center;
- margin:0 0 12px;
+/* Home hero: an unobtrusive logo accent rather than a full-width content block. */
+.main .hero{position:relative}
+.main .hero > div:first-child{min-width:0}
+.main .hero .allen-eye-home-logo{
+ position:absolute;z-index:2;top:10px;right:29%;
+ display:block;width:clamp(140px,18vw,250px);
+ height:auto;aspect-ratio:2.15/1;object-fit:cover;object-position:center;
+ margin:0;pointer-events:none;
+}
+/* The name must always remain readable, even if the cinematic text observer stalls. */
+body.cinema-motion .main .hero h1.cinema-text{
+ clip-path:none!important;opacity:1!important;transform:none!important;
+}
+@media(max-width:990px){
+ .main .hero .allen-eye-home-logo{top:4px;right:18%;width:clamp(120px,20vw,200px)}
 }
 @media(max-width:660px){
  .logo.allen-eye-brand{justify-content:flex-start;font-size:27px}
- .allen-eye-home-logo{width:min(100%,390px)}
+ .main .hero .allen-eye-home-logo{
+  position:static;width:min(66vw,210px);height:auto;margin:0 0 14px;
+ }
 }
