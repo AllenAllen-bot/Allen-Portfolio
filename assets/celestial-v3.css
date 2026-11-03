@@ -42,3 +42,6 @@ aside nav a:hover, aside nav a:focus-visible{transform:none!important}
 
 /* Disable the decorative celestial eclipse/halo; retain the Ronova video background. */
 .v3-atmosphere,.v3-eclipse,.v3-halo{display:none!important;}
+
+/* Keep Ronova's background video fixed while it plays: no mouse or scroll parallax. */
+body>.a13x-video-bg{transform:none!important;transition:none!important;}
