@@ -89,16 +89,14 @@ body:after,body.portfolio-gallery-page:after{content:"";display:block;position:f
 /* Keep video at the requested 65% opacity. */
 body>.a13x-video-bg{opacity:.75}
 
-/* Official Allen crimson eye branding: use the approved transparent artwork unchanged. */
+/* Sidebar branding: text-only Allen mark (eye artwork remains on Home and as favicon). */
 .logo.allen-eye-brand{
  display:flex;align-items:center;justify-content:center;gap:6px;
  font-size:27px;letter-spacing:.01em;white-space:nowrap;
 }
-.logo.allen-eye-brand .allen-eye-brand-img{
- width:74px;height:44px;max-width:none;object-fit:cover;object-position:center;
- flex:none;display:block;
-}
 .logo.allen-eye-brand .allen-eye-brand-name{color:#fff}
+/* Prevent an old cached script from reintroducing the unwanted sidebar symbol. */
+aside .a13x-seal-mini{display:none!important}
 /* Center the approved red eye above the name in normal document flow.
    No absolute positioning, overlap, added artwork, or mouse movement. */
 .main .hero > div:first-child{min-width:0}

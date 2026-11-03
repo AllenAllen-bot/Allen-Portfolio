@@ -158,14 +158,6 @@
   addEventListener("online",()=>{if(allowed()){retryCount=0;clearVideoRetry();playCinematic()}});
   syncFocus();syncMotion();
 
-  const side=document.querySelector("aside .logo-sub");
-  if(side){
-    const emblem=document.createElement("div");
-    emblem.className="a13x-seal-mini";emblem.setAttribute("aria-hidden","true");
-    emblem.innerHTML=sigil();
-    side.insertAdjacentElement("afterend",emblem);
-  }
-
   const hero=document.querySelector("#a13x-main .hero");
   if(hero){
     const portrait=hero.querySelector(".hero-image");
