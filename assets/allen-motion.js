@@ -72,9 +72,8 @@
   let navigating=false;
   if(!motionOff()) {
     portal.classList.add("celestial-entrance");
-    const start=()=>raf(()=>portal.classList.add("celestial-portal-visible"));
-    if(document.readyState==="complete")start();
-    else addEventListener("load",start,{once:true});
+    // Begin immediately after DOM initialization rather than waiting for large video metadata.
+    raf(()=>portal.classList.add("celestial-portal-visible"));
     // Safety timeout ensures animation never lingers if image loading fails.
     setTimeout(()=>portal.classList.remove("celestial-portal-visible","celestial-entrance"),1700);
   }
