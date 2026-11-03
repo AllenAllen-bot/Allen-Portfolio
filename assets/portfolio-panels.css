@@ -27,3 +27,80 @@
 .audio-dashboard .audio-note{font-size:12px;color:#e2bcca}
 @media(max-width:850px){.audio-chain{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.audio-chain{grid-template-columns:1fr}.rn-chapter summary{padding:14px}.rn-chapter .rn-chapter-body{padding:2px 14px 16px}}
+
+/* L-Acoustics System Explorer: scoped responsive controls, cards, and full catalog. */
+.audio-dashboard .audio-controls{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:24px 0;
+}
+.audio-dashboard .audio-controls label{min-width:0;flex:unset}
+.audio-dashboard .audio-controls select{
+ min-width:0;max-width:100%;min-height:48px;
+ background:rgba(43,9,25,.93);border-color:rgba(247,170,188,.5);
+}
+.audio-dashboard .audio-controls select:focus-visible{
+ outline:2px solid #f1c68e;outline-offset:3px;
+}
+.audio-dashboard .audio-chain{
+ grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch;
+}
+.audio-dashboard .audio-node{
+ padding:17px 13px;
+ background:linear-gradient(160deg,rgba(116,22,51,.43),rgba(38,6,24,.5));
+ border-color:rgba(250,187,206,.34);
+}
+.audio-dashboard .audio-node h3{
+ font-size:clamp(15px,1.65vw,19px);overflow-wrap:anywhere;
+}
+.audio-dashboard .audio-node p{overflow-wrap:anywhere}
+.audio-dashboard .audio-system-meta{
+ display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;
+ background:rgba(69,13,34,.43);padding:12px 14px;
+ border:1px solid rgba(250,192,205,.23);border-radius:12px;margin-top:18px;
+}
+.audio-dashboard .audio-system-meta strong{font-size:14px;color:#fff4f6}
+.audio-dashboard .audio-system-meta span{font-size:13px;color:#f1c9d4;flex:1;min-width:180px}
+.audio-dashboard a.audio-reference-link,
+.audio-dashboard .audio-catalog-group a{
+ color:#ffdb9e;text-decoration:underline;text-underline-offset:3px;
+ font-size:13px;
+}
+.audio-dashboard .audio-detail{
+ min-height:0;padding:15px 17px;line-height:1.7;
+}
+.audio-dashboard .audio-catalog{
+ border:1px solid rgba(246,186,198,.33);
+ border-radius:14px;background:rgba(37,6,22,.45);margin-top:20px;
+}
+.audio-dashboard .audio-catalog summary{
+ cursor:pointer;padding:15px 18px;color:#ffe5ed;font-weight:700;
+}
+.audio-dashboard .audio-catalog summary:focus-visible{
+ outline:2px solid #f1c68e;outline-offset:3px;
+}
+.audio-dashboard .audio-catalog-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;padding:0 17px 18px;
+}
+.audio-dashboard .audio-catalog-group{
+ border:1px solid rgba(246,182,202,.22);border-radius:12px;
+ padding:13px;background:rgba(115,26,54,.16);min-width:0;
+}
+.audio-dashboard .audio-catalog-group h4{
+ margin:0 0 10px;font:700 17px 'Outfit',sans-serif;color:#fff5f6;
+}
+.audio-dashboard .audio-model-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.audio-dashboard .audio-model-chips span{
+ border:1px solid rgba(235,176,193,.3);border-radius:999px;
+ padding:5px 9px;font-size:12px;color:#ffdde5;background:rgba(148,38,71,.22);
+}
+@media(max-width:1140px){
+ .audio-dashboard .audio-chain{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .audio-dashboard .audio-controls{grid-template-columns:1fr}
+ .audio-dashboard .audio-chain{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .audio-dashboard .audio-catalog-grid{grid-template-columns:1fr}
+}
+@media(max-width:440px){
+ .audio-dashboard .audio-chain{grid-template-columns:1fr}
+}
