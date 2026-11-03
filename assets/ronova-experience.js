@@ -22,8 +22,8 @@
     return '<svg viewBox="0 0 24 24" aria-hidden="true">'+icons[name]+'</svg>';
   };
   function sigil(){
-    const petals=Array.from({length:7},(_,i)=>'<path transform="rotate('+(i*360/7)+' 50 50)" d="M50 45C34 26 38 12 50 5C62 12 66 26 50 45Z" fill="rgba(194,41,89,.52)" stroke="#efc58c" stroke-width="1.65"/>').join("");
-    return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="rgba(241,193,142,.4)" stroke-width=".75"/><g class="a13x-petals">'+petals+'</g><circle cx="50" cy="50" r="12" fill="#250815" stroke="#edbd81" stroke-width="2.2"/><circle cx="50" cy="50" r="5" fill="#edc987"/></svg>';
+    // Approved Ronova seven-petaled golden iris, shared by the badge, modal and sidebar.
+    return '<img class="a13x-golden-iris" src="assets/ronova-golden-eye-reveal.webp" alt="" width="100" height="100" decoding="async"/>';
   }
 
   const ambient=document.createElement("div");
