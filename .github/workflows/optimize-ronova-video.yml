@@ -1,0 +1,104 @@
+name: Optimize Ronova Background Video
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/optimize-ronova-video.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ronova-background-faststart
+  cancel-in-progress: false
+
+jobs:
+  faststart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout portfolio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Losslessly optimize MP4 streaming layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          input="assets/ronova-background.mp4"
+          test -s "$input"
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg
+          fi
+
+          # MP4 players can start faster when the moov index precedes mdat.
+          if python3 - <<'PY'
+          from pathlib import Path
+          import struct, sys
+          path = Path("assets/ronova-background.mp4")
+          length = path.stat().st_size
+          offset = 0
+          atoms = []
+          with path.open("rb") as stream:
+              while offset + 8 <= length:
+                  stream.seek(offset)
+                  header = stream.read(8)
+                  size, name = struct.unpack(">I4s", header)
+                  header_size = 8
+                  if size == 1:
+                      size = struct.unpack(">Q", stream.read(8))[0]
+                      header_size = 16
+                  elif size == 0:
+                      size = length - offset
+                  if size < header_size or offset + size > length:
+                      raise ValueError(f"Invalid MP4 atom at {offset}")
+                  atoms.append((name.decode("latin1"), offset))
+                  offset += size
+          moov = next((pos for name, pos in atoms if name == "moov"), None)
+          mdat = next((pos for name, pos in atoms if name == "mdat"), None)
+          print(f"MP4 index: moov={moov}, mdat={mdat}")
+          sys.exit(0 if moov is not None and mdat is not None and moov < mdat else 1)
+          PY
+          then
+            echo "MP4 already has fast-start metadata; no binary rewrite needed."
+            exit 0
+          fi
+
+          output="$(mktemp --suffix=.mp4)"
+          trap 'rm -f "$output"' EXIT
+          # Stream-copy preserves every video/audio frame without re-encoding.
+          ffmpeg -nostdin -hide_banner -loglevel error -y -i "$input" -map 0 -c copy -movflags +faststart "$output"
+          ffprobe -v error -show_entries format=format_name -of default=noprint_wrappers=1 "$output"
+          if [ "$(stat -c %s "$output")" -ge 100000000 ]; then
+            echo "::error::Optimized file exceeds GitHub's 100 MB file limit."
+            exit 1
+          fi
+          mv "$output" "$input"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$input"
+          if git diff --cached --quiet; then
+            echo "No MP4 changes necessary."
+            exit 0
+          fi
+          git commit -m "Move Ronova MP4 index to front for streaming without re-encoding"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo "::error::Rebase conflicted; refusing to overwrite newer changes."
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              echo "Optimized MP4 committed successfully."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Could not push optimized MP4 without a conflict."
+          exit 1
