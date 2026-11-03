@@ -19,6 +19,7 @@ const cursor=document.createElement("div");
 cursor.className="v3-cursor";cursor.setAttribute("aria-hidden","true");
 body.append(cursor);
 let x=innerWidth/2,y=innerHeight/2,pending=false;
+const positionCursor=()=>{cursor.style.transform="translate3d("+x+"px,"+y+"px,0) translate(-50%,-50%)";};
 function update(){
 pending=false;
 const active=motion(),pointer=pointerMotion(),factor=mobile.matches?.35:1;
@@ -27,7 +28,7 @@ const py=pointer?(y/Math.max(innerHeight,1)-.5)*18*factor:0;
 root.style.setProperty("--v3-px",px.toFixed(1)+"px");
 root.style.setProperty("--v3-py",(py-(active?Math.min(scrollY,1600)*.035*factor:0)).toFixed(1)+"px");
 root.style.setProperty("--v3-eclipse",active?(Math.min(scrollY,1600)*.07*factor).toFixed(1)+"px":"0px");
-cursor.style.transform="translate3d("+(x-14)+"px,"+(y-14)+"px,0)";
+positionCursor();
 cursor.classList.toggle("v3-cursor-show",pointer&&document.hasFocus()&&!body.classList.contains("v3-sidebar-hover"));
 atmosphere.classList.toggle("v3-still",!active);
 }
@@ -35,8 +36,8 @@ function schedule(){if(!pending){pending=true;requestAnimationFrame(update)}}
 addEventListener("scroll",schedule,{passive:true});addEventListener("resize",schedule,{passive:true});
 addEventListener("focus",schedule);addEventListener("blur",schedule);
 reduce.addEventListener?.("change",schedule);fine.addEventListener?.("change",schedule);mobile.addEventListener?.("change",schedule);
-document.addEventListener("pointermove",e=>{if(e.pointerType!=="touch"){x=e.clientX;y=e.clientY;schedule()}},{passive:true});
-document.addEventListener("pointerover",e=>{body.classList.toggle("v3-sidebar-hover",!!e.target.closest("aside nav"));cursor.classList.toggle("v3-hot",!!e.target.closest("a,button,summary,input,select,textarea"));schedule()},{passive:true});
+document.addEventListener("pointermove",e=>{if(e.pointerType!=="touch"){x=e.clientX;y=e.clientY;positionCursor();schedule()}},{passive:true});
+document.addEventListener("pointerover",e=>{if(e.pointerType!=="touch"){x=e.clientX;y=e.clientY;positionCursor()}body.classList.toggle("v3-sidebar-hover",!!e.target.closest("aside nav"));cursor.classList.toggle("v3-hot",!!e.target.closest("a,button,summary,input,select,textarea"));schedule()},{passive:true});
 document.addEventListener("pointerout",e=>{if(!e.relatedTarget){body.classList.remove("v3-sidebar-hover");cursor.classList.remove("v3-cursor-show")}},{passive:true});
 document.getElementById("a13x-motion")?.addEventListener("click",()=>requestAnimationFrame(schedule));
 schedule();
