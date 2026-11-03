@@ -156,7 +156,7 @@ body.a13x-motion-off .cinema-back-top {animation:none!important;transition:none!
 
 /* === Extreme cinematic visuals v2: all drawn behind content === */
 @view-transition { navigation: none; } /* Script owns navigations; avoids two transition engines. */
-body .a13x-video-bg:not(.unused-selector) {opacity:.75;} /* Preserve user-requested video transparency. */
+/* Existing video opacity and its focus/pause controls remain governed by ronova-experience.css. */
 
 /* Approved golden iris remains an unchanged image; only its frame is animated. */
 .celestial-portal{
