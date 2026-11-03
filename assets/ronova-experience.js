@@ -63,7 +63,8 @@
   let cinematicSourceAttached=false;
   let retryTimer=null;
   let retryCount=0;
-  const retryDelays=[1400,2500,4000,7000,11000,16000,22000,30000];
+  // Responsive first retries, followed by gentle ongoing recovery for intermittent connections.
+  const retryDelays=[500,1200,2400,4000,6500,10000,16000,25000];
   const allowed=()=>Boolean(video && cinematicUnlocked && !paused && !document.hidden);
 
   function clearVideoRetry(){
@@ -79,14 +80,15 @@
     video.load();
   }
   function retryCinematic(){
-    if(!allowed()||retryTimer!==null||retryCount>=retryDelays.length)return;
+    if(!allowed()||retryTimer!==null)return;
+    const delay=retryDelays[Math.min(retryCount,retryDelays.length-1)];
     retryTimer=setTimeout(()=>{
       retryTimer=null;
-      retryCount++;
+      retryCount=Math.min(retryCount+1,retryDelays.length-1);
       if(!allowed())return;
       if(video.error && cinematicSourceAttached)video.load();
       playCinematic();
-    },retryDelays[retryCount]);
+    },delay);
   }
   function playCinematic(){
     if(!allowed())return;
@@ -128,6 +130,10 @@
   video?.addEventListener("error",retryCinematic);
   video?.addEventListener("pause",()=>{if(allowed())retryCinematic()});
 
+  // Prime only near the end of a safely buffered intro; the intro remains the sole video playing.
+  document.addEventListener("ronova:cinematic-prime",()=>{
+    if(!paused && !document.hidden && !cinematicUnlocked)prepareCinematic();
+  });
   document.addEventListener("ronova:intro-finished",unlockCinematic);
   // Recovery if the intro fails to initialize and its armed class times out.
   if(!cinematicUnlocked && typeof MutationObserver!=="undefined"){

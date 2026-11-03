@@ -46,7 +46,7 @@
  const audio=layer.querySelector(".ronova-intro-audio");
  const bar=layer.querySelector(".ronova-intro-progress span");
  video.muted=true;video.volume=.65;video.playsInline=true;
- let finished=false,started=false;
+ let finished=false,started=false,cinematicPrimed=false;
  let startDeadline,overallDeadline,stallDeadline,exitDeadline;
  let cleanupStarted=false;
  function finish(){
@@ -81,6 +81,19 @@
  video.addEventListener("timeupdate",()=>{
    if(video.duration&&isFinite(video.duration)){
      bar.style.width=Math.min(100,video.currentTime/video.duration*100).toFixed(2)+"%";
+     // Give the intro exclusive bandwidth until its last frames are fully buffered.
+     // Then warm the background MP4 on the same native video element, without autoplay.
+     if(!finished && !cinematicPrimed && video.duration-video.currentTime<=5 && video.duration-video.currentTime>=0){
+       const ranges=video.buffered;
+       let introBufferedToEnd=false;
+       for(let i=0;i<ranges.length;i++){
+         if(ranges.start(i)<=video.currentTime && ranges.end(i)>=video.duration-.25){introBufferedToEnd=true;break}
+       }
+       if(introBufferedToEnd){
+         cinematicPrimed=true;
+         document.dispatchEvent(new Event("ronova:cinematic-prime"));
+       }
+     }
    }
  });
  function playing(){
