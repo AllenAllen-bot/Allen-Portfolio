@@ -34,3 +34,8 @@ body.a13x-motion-off .v3-cursor,body.a13x-motion-off .v3-nav-marker{display:none
 body.a13x-motion-off .a13x-video-bg,body.a13x-motion-off .v3-eclipse,body.a13x-motion-off .v3-halo{transform:none!important}
 body.a13x-motion-off .v3-magnetic{translate:none!important}
 body.a13x-motion-off .a13x-gallery-item.v3-photo-enter{animation:none!important}
+
+/* Sidebar cursor stability: keep the native cursor over navigation and avoid moving targets. */
+body.v3-sidebar-hover .v3-cursor{opacity:0!important;visibility:hidden!important}
+aside nav a:hover, aside nav a:focus-visible{transform:none!important}
+@media(hover:hover) and (pointer:fine){aside nav a{cursor:pointer}}
