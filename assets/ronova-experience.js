@@ -11,7 +11,8 @@
   const getPref = (name) => {try{return localStorage.getItem("a13x:"+name)}catch(e){return null}};
   const setPref = (name,value) => {try{localStorage.setItem("a13x:"+name,String(value))}catch(e){}};
   let focus = getPref("focus") === "true" || (getPref("focus") === null && saveData);
-  let paused = getPref("paused") === "true" || (getPref("paused") === null && (reduce.matches || saveData));
+  // Separate explicit user Pause from temporary network/autoplay failures.
+  let paused = getPref("videoUserPaused") === "true" || (getPref("videoUserPaused") === null && (reduce.matches || saveData));
 
   const svgIcon = (name) => {
     const icons = {
@@ -56,27 +57,99 @@
     focusButton.setAttribute("aria-label",focus?"Switch to cinematic video mode":"Switch to high-readability focus mode");
     focusButton.innerHTML=svgIcon("eye")+(focus?"Focus: ON":"Cinematic");
   }
+  // The intro owns first playback. Background MP4 is requested only after intro finishes.
+  const cinematicSrc=video?.dataset?.cinematicSrc || "assets/ronova-background.mp4?v=cinematic-staged-20261103";
+  let cinematicUnlocked=!root.classList.contains("ronova-intro-armed");
+  let cinematicSourceAttached=false;
+  let retryTimer=null;
+  let retryCount=0;
+  const retryDelays=[1400,2500,4000,7000,11000,16000,22000,30000];
+  const allowed=()=>Boolean(video && cinematicUnlocked && !paused && !document.hidden);
+
+  function clearVideoRetry(){
+    if(retryTimer!==null){clearTimeout(retryTimer);retryTimer=null}
+  }
+  function prepareCinematic(){
+    if(!video||cinematicSourceAttached)return;
+    video.muted=true;
+    video.playsInline=true;
+    video.preload="auto";
+    video.src=cinematicSrc;
+    cinematicSourceAttached=true;
+    video.load();
+  }
+  function retryCinematic(){
+    if(!allowed()||retryTimer!==null||retryCount>=retryDelays.length)return;
+    retryTimer=setTimeout(()=>{
+      retryTimer=null;
+      retryCount++;
+      if(!allowed())return;
+      if(video.error && cinematicSourceAttached)video.load();
+      playCinematic();
+    },retryDelays[retryCount]);
+  }
+  function playCinematic(){
+    if(!allowed())return;
+    prepareCinematic();
+    try{
+      const promise=video.play();
+      if(promise&&typeof promise.catch==="function"){
+        promise.catch(()=>{
+          // Browser/intermittent network failures never modify stored user preference.
+          if(allowed())retryCinematic();
+        });
+      }
+    }catch{
+      retryCinematic();
+    }
+  }
   function syncMotion(){
     body.classList.toggle("a13x-motion-off",paused);
     motionButton.setAttribute("aria-pressed",String(paused));
     motionButton.setAttribute("aria-label",paused?"Play animated background":"Pause animated background");
     motionButton.innerHTML=svgIcon(paused?"play":"pause")+(paused?"Play":"Pause");
-    if (!video) return;
-    if (paused || document.hidden) video.pause();
-    else {
-      const attempt=video.play();
-      if(attempt && typeof attempt.catch==="function") attempt.catch(()=>{
-        paused=true;setPref("paused",true);
-        body.classList.add("a13x-motion-off");
-        motionButton.setAttribute("aria-pressed","true");
-        motionButton.setAttribute("aria-label","Play animated background");
-        motionButton.innerHTML=svgIcon("play")+"Play";
-      });
+    if(!video)return;
+    if(paused||document.hidden||!cinematicUnlocked){
+      clearVideoRetry();
+      video.pause();
+    }else{
+      playCinematic();
     }
   }
+  function unlockCinematic(){
+    if(cinematicUnlocked)return;
+    cinematicUnlocked=true;
+    syncMotion();
+  }
+  video?.addEventListener("playing",()=>{retryCount=0;clearVideoRetry()});
+  video?.addEventListener("canplay",()=>{if(allowed()&&video.paused)playCinematic()});
+  video?.addEventListener("waiting",retryCinematic);
+  video?.addEventListener("stalled",retryCinematic);
+  video?.addEventListener("error",retryCinematic);
+  video?.addEventListener("pause",()=>{if(allowed())retryCinematic()});
+
+  document.addEventListener("ronova:intro-finished",unlockCinematic);
+  // Recovery if the intro fails to initialize and its armed class times out.
+  if(!cinematicUnlocked && typeof MutationObserver!=="undefined"){
+    const watchIntro=new MutationObserver(()=>{
+      if(!root.classList.contains("ronova-intro-armed")){
+        watchIntro.disconnect();
+        unlockCinematic();
+      }
+    });
+    watchIntro.observe(root,{attributes:true,attributeFilter:["class"]});
+  }
   focusButton.addEventListener("click",()=>{focus=!focus;setPref("focus",focus);syncFocus()});
-  motionButton.addEventListener("click",()=>{paused=!paused;setPref("paused",paused);syncMotion()});
-  document.addEventListener("visibilitychange",()=>syncMotion());
+  motionButton.addEventListener("click",()=>{
+    paused=!paused;
+    retryCount=0;
+    clearVideoRetry();
+    setPref("videoUserPaused",paused); // Only this explicit click persists Pause.
+    syncMotion();
+  });
+  document.addEventListener("visibilitychange",syncMotion);
+  addEventListener("pageshow",syncMotion);
+  addEventListener("online",()=>{if(allowed()){retryCount=0;clearVideoRetry();playCinematic()}});
   syncFocus();syncMotion();
 
   const side=document.querySelector("aside .logo-sub");

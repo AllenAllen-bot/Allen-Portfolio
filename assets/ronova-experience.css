@@ -368,3 +368,6 @@ img[src*="ronova-sticker-"] {
   display: none !important;
   visibility: hidden !important;
 }
+
+/* Small still-image fallback while the cinematic MP4 is being fetched or buffered. */
+body>.a13x-video-bg{background:#1b0712 url("ronova-intro-poster.jpg") center/cover no-repeat;}

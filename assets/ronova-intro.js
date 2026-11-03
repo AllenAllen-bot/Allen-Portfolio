@@ -8,13 +8,15 @@
  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
  const saveData=Boolean(navigator.connection?.saveData);
  let savedPause=false;
- try{savedPause=localStorage.getItem("a13x:paused")==="true"}catch{}
+ try{savedPause=localStorage.getItem("a13x:videoUserPaused")==="true"}catch{}
  if(reduced||saveData||savedPause){
-   root.classList.remove("ronova-intro-armed");return;
+   root.classList.remove("ronova-intro-armed");
+   document.dispatchEvent(new Event("ronova:intro-finished"));
+   return;
  }
  try{sessionStorage.setItem("allen:intro:played","1")}catch{}
  const backdrop=document.querySelector("video.a13x-video-bg");
- const resumeBackground=backdrop && !backdrop.paused;
+ // Do not request the heavy background while the opening cinematic is playing.
  if(backdrop)backdrop.pause();
  const layout=document.querySelector("body > .layout");
  const wasInert=layout?.hasAttribute("inert");
@@ -59,9 +61,8 @@
      if(oldAria===null)layout.removeAttribute("aria-hidden");
      else layout.setAttribute("aria-hidden",oldAria);
    }
-   if(backdrop && resumeBackground && !body.classList.contains("a13x-motion-off")){
-     backdrop.play().catch(()=>{});
-   }
+   // Request and play the background only after the opening video has ended or been skipped.
+   document.dispatchEvent(new Event("ronova:intro-finished"));
    exitDeadline=setTimeout(()=>{
      if(cleanupStarted)return;cleanupStarted=true;
      layer.remove();root.classList.remove("ronova-intro-armed","ronova-intro-reveal");
