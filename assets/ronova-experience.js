@@ -203,87 +203,130 @@
 })();
 
 
-/* Ronova sticker scatter: responsive to content and newly randomized on each refresh. */
+/* Ronova sticker scatter: 15 transparent assets, intelligently framed on every page.
+   The navigation, content panels and floating controls are treated as solid safe zones.
+   If there is no genuinely safe space on a narrow display, a sticker is hidden. */
 (() => {
   "use strict";
   if (document.querySelector(".ronova-sticker-layer")) return;
-  const count=15;
-  const layer=document.createElement("div");
-  layer.className="ronova-sticker-layer";
-  layer.setAttribute("aria-hidden","true");
+  const count = 15;
+  const layer = document.createElement("div");
+  layer.className = "ronova-sticker-layer";
+  layer.setAttribute("aria-hidden", "true");
   document.body.append(layer);
-  const stickers=Array.from({length:count},(_,i)=>{
-    const image=document.createElement("img");
-    image.className="ronova-sticker";
-    image.src="assets/ronova-sticker-"+(i%3+1)+".webp";
-    image.alt="";image.decoding="async";image.draggable=false;
-    image.loading="eager";
-    image.dataset.turn=String(Math.round(-24+Math.random()*48));
-    image.dataset.grow=String(.85+Math.random()*.30);
-    layer.append(image);
-    return image;
+
+  const stickers = Array.from({length: count}, (_, i) => {
+    const img = document.createElement("img");
+    img.className = "ronova-sticker";
+    img.src = "assets/ronova-sticker-" + (i % 3 + 1) + ".webp";
+    img.alt = "";
+    img.decoding = "async";
+    img.draggable = false;
+    img.loading = "lazy";
+    img.dataset.angle = String(Math.round(-16 + Math.random() * 32));
+    img.dataset.scale = String(.86 + Math.random() * .27);
+    layer.append(img);
+    return img;
   });
-  let pending=false;
-  const clamp=(x,min,max)=>Math.min(max,Math.max(min,x));
-  function protectedRects(){
-    const root=document.querySelector(".layout");
-    if(!root)return [];
-    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
-      acceptNode(n){return n.textContent.trim() && !n.parentElement.closest("script,style") ? NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}
-    });
-    const rects=[];let node;
-    while((node=walker.nextNode())){
-      const range=document.createRange();range.selectNodeContents(node);
-      for(const b of range.getClientRects())if(b.width>3&&b.height>3)rects.push({x:b.left,y:b.top+scrollY,w:b.width,h:b.height});
-      range.detach?.();
-    }
-    for(const el of root.querySelectorAll("button,a,input,textarea,select,.hero-image")){
-      const b=el.getBoundingClientRect();
-      if(b.width>0&&b.height>0)rects.push({x:b.left,y:b.top+scrollY,w:b.width,h:b.height});
-    }
-    return rects;
+
+  let pending = false;
+  const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
+  const pad = 12;
+
+  function rectOf(el) {
+    const b = el.getBoundingClientRect();
+    if (!b.width || !b.height) return null;
+    return {left:b.left, right:b.right, top:b.top + scrollY, bottom:b.bottom + scrollY};
   }
-  function render(){
-    const W=document.documentElement.clientWidth;
-    const H=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,innerHeight);
-    layer.style.height=H+"px";
-    const narrow=W<600;
-    const R=protectedRects();
-    const used=[];
-    const base=narrow?62:W<980?89:112;
-    const spacing=H/count;
-    stickers.forEach((img,i)=>{
-      const size=Math.round(base*Number(img.dataset.grow));
-      // Each sticker is visibly inside the viewport, biased toward alternate edges.
-      const side=i%2;
-      const x=side===0?size*.48+4:W-size*.48-4;
-      const target=clamp((i+.35+Math.random()*.25)*spacing,55,H-35);
-      let best=null;
-      for(let k=0;k<54;k++){
-        const dy=k===0?0:(k%2?-1:1)*Math.ceil(k/2)*14;
-        const cy=clamp(target+dy,Math.max(25,size*.38),H-Math.max(25,size*.38));
-        const box={x:x-size*.48,y:cy-size*.52,w:size*.96,h:size*1.04};
-        const intersections=R.reduce((sum,r)=>{
-          const overlapW=Math.max(0,Math.min(box.x+box.w,r.x+r.w)-Math.max(box.x,r.x));
-          const overlapH=Math.max(0,Math.min(box.y+box.h,r.y+r.h)-Math.max(box.y,r.y));
-          return sum+overlapW*overlapH;
-        },0);
-        const near=used.reduce((sum,v)=>sum+(Math.abs(v.y-cy)<size*.88&&v.side===side?6000:0),0);
-        const score=intersections*20+near+Math.abs(dy)*.5;
-        if(!best||score<best.score)best={cy,score};
-        if(score<10)break;
+  function safeZones() {
+    const selectors = [
+      ".layout > aside", ".layout > main", ".a13x-controller",
+      ".a13x-skip", ".ronova-intro-overlay"
+    ];
+    return selectors.flatMap(selector => [...document.querySelectorAll(selector)]
+      .filter(el => getComputedStyle(el).display !== "none")
+      .map(rectOf).filter(Boolean));
+  }
+  function intersects(a,b,margin=pad) {
+    return a.left < b.right + margin && a.right > b.left - margin &&
+           a.top < b.bottom + margin && a.bottom > b.top - margin;
+  }
+
+  function render() {
+    const W = document.documentElement.clientWidth;
+    const H = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, innerHeight);
+    layer.style.height = H + "px";
+
+    const forbidden = safeZones();
+    const occupied = [];
+    const mobile = W < 720;
+    const base = mobile ? 66 : W < 1100 ? 94 : 112;
+    const band = Math.max(1, H / count);
+    const page = location.pathname.split("/").pop() || "index.html";
+    // Stable composition per visit, with small refresh-to-refresh variation.
+    const pageOffset = [...page].reduce((sum,ch) => sum + ch.charCodeAt(0), 0) % 3;
+
+    stickers.forEach((img,i) => {
+      const size = Math.round(base * Number(img.dataset.scale));
+      // Fully visible edges are mandatory; no sticker may overlap content or navigation.
+      const half = size * .72; // generous allowance for rotated sticker corners
+      const xOptions = [
+        half + 5, W - half - 5,
+        half + Math.max(10, W * .025),
+        W - half - Math.max(10, W * .025)
+      ];
+      const yTarget = clamp((i + .5) * band, half + 8, H - half - 8);
+      const preference = (i + pageOffset) % 2;
+      const xs = preference ? [xOptions[1],xOptions[3],xOptions[0],xOptions[2]]
+                            : [xOptions[0],xOptions[2],xOptions[1],xOptions[3]];
+      let chosen = null;
+      const offsets = [0];
+      for (let n=1; n<=16; n++) offsets.push(n * 18, -n * 18);
+      for (const dy of offsets) {
+        if (chosen) break;
+        const y = yTarget + dy;
+        if (y - half < 4 || y + half > H - 4) continue;
+        for (const x of xs) {
+          if (x - half < 4 || x + half > W - 4) continue;
+          const box = {left:x-half,right:x+half,top:y-half,bottom:y+half};
+          if (forbidden.some(r => intersects(box,r,6))) continue;
+          if (occupied.some(r => intersects(box,r,4))) continue;
+          chosen = {x,y,box};
+          break;
+        }
       }
-      img.style.left=x+"px";
-      img.style.top=best.cy+"px";
-      img.style.setProperty("--sticker-size",size+"px");
-      img.style.setProperty("--sticker-angle",img.dataset.turn+"deg");
-      used.push({side,y:best.cy});
+      // On cramped viewports keep content usable instead of forcing visual overlap.
+      img.hidden = !chosen;
+      img.style.display = chosen ? "block" : "none";
+      if (!chosen) return;
+      occupied.push(chosen.box);
+      img.style.left = chosen.x + "px";
+      img.style.top = chosen.y + "px";
+      img.style.setProperty("--sticker-size", size + "px");
+      img.style.setProperty("--sticker-angle", img.dataset.angle + "deg");
     });
   }
-  function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;render()})}
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});
-  addEventListener("load",schedule,{once:true});
-  addEventListener("resize",schedule,{passive:true});
-  if(document.fonts?.ready)document.fonts.ready.then(schedule);
-  render();
+
+  function schedule() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {pending = false; render();});
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", schedule, {once:true});
+  addEventListener("load", schedule, {once:true});
+  addEventListener("resize", schedule, {passive:true});
+  if (document.fonts?.ready) document.fonts.ready.then(schedule);
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(schedule);
+    const main = document.querySelector(".layout > main");
+    const sidebar = document.querySelector(".layout > aside");
+    if (main) observer.observe(main);
+    if (sidebar) observer.observe(sidebar);
+  }
+  // Expanded lore, gallery filtering and animation can change page geometry.
+  document.addEventListener("toggle", schedule, true);
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-filter],[data-gallery-filter],.gallery-filter,.side-filter")) schedule();
+  });
+  schedule();
 })();
