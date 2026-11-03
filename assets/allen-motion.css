@@ -200,21 +200,21 @@ body.a13x-motion-off .cinema-back-top {animation:none!important;transition:none!
   55%{opacity:1} 95%,100%{opacity:0}
 }
 @keyframes celestial-eye-arrive {
-  0%{opacity:0;transform:scale(.5) rotate(-27deg)}
-  29%{opacity:1;transform:scale(1.1) rotate(6deg)}
-  63%{transform:scale(1) rotate(0)}
-  100%{opacity:0;transform:scale(1.65) rotate(0)}
+  0%{opacity:0;transform:scale(.5)}
+  29%{opacity:1;transform:scale(1.1)}
+  63%{transform:scale(1)}
+  100%{opacity:0;transform:scale(1.65)}
 }
 @keyframes celestial-eye-depart {
-  0%{opacity:0;transform:scale(.76) rotate(-10deg)}
-  72%{opacity:1;transform:scale(1.15) rotate(0)}
-  100%{opacity:1;transform:scale(1.5) rotate(10deg)}
+  0%{opacity:0;transform:scale(.76)}
+  72%{opacity:1;transform:scale(1.15)}
+  100%{opacity:1;transform:scale(1.5)}
 }
 @keyframes celestial-leave {0%{opacity:0}70%,100%{opacity:1}}
 @keyframes celestial-orbit {
-  from{opacity:0;transform:rotate(-95deg) scale(.63)}
+  from{opacity:0;transform:scale(.63)}
   55%{opacity:1}
-  to{opacity:.2;transform:rotate(165deg) scale(1.35)}
+  to{opacity:.2;transform:scale(1.35)}
 }
 @keyframes celestial-flare{
   0%{opacity:0;scale:.2 1} 32%{opacity:.9}
@@ -344,3 +344,6 @@ body.a13x-motion-off .cinema-tilt-card{
 @media(prefers-reduced-data:reduce){
   .cinema-petal-field,.cinema-depth-field,.celestial-portal{display:none!important}
 }
+
+/* Fixed-orientation iris on all pages. Glow, scale and fades remain active. */
+.celestial-eye-shell,.celestial-eye-shell img,.celestial-portal-orbit,.a13x-golden-iris{rotate:0deg!important;}
