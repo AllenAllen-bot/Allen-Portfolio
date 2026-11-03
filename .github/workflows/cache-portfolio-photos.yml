@@ -8,6 +8,10 @@ on:
       - .github/workflows/cache-portfolio-photos.yml
   workflow_dispatch:
 
+concurrency:
+  group: portfolio-photo-cache
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -36,9 +40,9 @@ jobs:
           cars-01.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg&fit=crop&w=1000&q=78
           cars-02.jpg|https://images.unsplash.com/photo-1544636331-e26879cd4d9b?fm=jpg&fit=crop&w=1000&q=78
           cars-03.jpg|https://images.unsplash.com/photo-1494905998402-395d579af36f?fm=jpg&fit=crop&w=1000&q=78
-          cars-04.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg&fit=crop&w=1000&q=78
+          cars-04.jpg|https://images.unsplash.com/photo-1552519507-da3b142c6e3d?fm=jpg&fit=crop&w=1000&q=78
           animals-01.jpg|https://images.unsplash.com/photo-1546182990-dffeafbe841d?fm=jpg&fit=crop&w=1000&q=78
-          animals-02.jpg|https://images.unsplash.com/photo-1561731216-c3a4d99437?fm=jpg&fit=crop&w=1000&q=78
+          animals-02.jpg|https://images.unsplash.com/photo-1517849845537-4d257902454a?fm=jpg&fit=crop&w=1000&q=78
           animals-03.jpg|https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?fm=jpg&fit=crop&w=1000&q=78
           animals-04.jpg|https://images.unsplash.com/photo-1484406566174-9da000fda645?fm=jpg&fit=crop&w=1000&q=78
           birds-01.jpg|https://images.unsplash.com/photo-1710098213129-8ff0efb0e0fc?fm=jpg&fit=crop&w=1000&q=78
