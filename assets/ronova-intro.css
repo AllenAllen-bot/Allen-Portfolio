@@ -1,6 +1,17 @@
 /* Ronova cinematic intro. A 1-second blackout, video bloom, then website reveal. */
-html.ronova-intro-armed:not(.ronova-intro-reveal)::before {
-  content:"";position:fixed;inset:0;z-index:99997;background:#030004;pointer-events:none;
+/* Make the initial screen dark without a root-level overlay above the video. */
+html.ronova-intro-armed:not(.ronova-intro-reveal) body {
+  background:#030004!important;
+}
+html.ronova-intro-armed:not(.ronova-intro-reveal) body::before,
+html.ronova-intro-armed:not(.ronova-intro-reveal) body::after {
+  opacity:0!important;
+}
+html.ronova-intro-armed:not(.ronova-intro-reveal) body > .a13x-video-bg {
+  visibility:hidden!important;
+}
+html.ronova-intro-armed:not(.ronova-intro-reveal) .a13x-ambient {
+  visibility:hidden!important;
 }
 html.ronova-intro-armed:not(.ronova-intro-reveal) body > .layout {
   opacity:0!important;
