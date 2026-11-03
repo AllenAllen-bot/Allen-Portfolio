@@ -117,122 +117,92 @@ body.cinema-motion .main .hero h1.cinema-text{
  .main .hero .allen-eye-home-logo{width:min(70vw,230px);margin:0 auto 12px}
 }
 
-
-/* 2026-11-03: balanced Allen hero. The right-hand name occupies the deliberate
-   open area above Ronova, never overlays the video, portrait or other text. */
+/* The entire name reads as one heading. Never separate A. Pena into the portrait column. */
 .main .hero{
-  display:grid;
-  grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);
-  gap:clamp(20px,2.7vw,40px);
-  align-items:start;
+ display:grid;
+ grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);
+ align-items:start;
+ gap:clamp(20px,2.7vw,40px);
 }
-.main .hero > .allen-hero-content{
-  min-width:0;
-}
+.main .hero > .allen-hero-content{min-width:0}
 .main .hero .allen-eye-home-logo{
-  position:relative;
-  z-index:1;
-  display:block;
-  width:clamp(160px,27vw,270px);
-  max-width:100%;
-  height:auto;
-  aspect-ratio:2.15/1;
-  object-fit:cover;
-  object-position:center;
-  margin:0 auto clamp(16px,1.4vw,22px);
-  transform:none!important;
-  pointer-events:none;
+ position:relative;z-index:1;display:block;
+ width:clamp(160px,27vw,270px);
+ max-width:100%;height:auto;aspect-ratio:2.15/1;
+ object-fit:cover;object-position:center;
+ margin:0 auto clamp(14px,1.5vw,22px);
+ transform:none!important;pointer-events:none;
 }
 .main .hero h1.allen-home-name{
-  display:block;
-  font:800 clamp(33px,4.1vw,68px)/1.08 'Outfit',sans-serif;
-  letter-spacing:-.045em;
-  text-align:center;
-  white-space:nowrap;
-  color:#fff6f7;
-  margin:0;
-  max-width:100%;
-  background:transparent;
+ position:relative;z-index:4;
+ display:block;
+ width:max-content;max-width:none;
+ margin:0;
+ font:800 clamp(32px,3.6vw,55px)/1.1 'Outfit',sans-serif;
+ letter-spacing:-.045em;
+ white-space:nowrap;
+ text-align:left;
+ color:#fff7fa;
+ background:none!important;
 }
-.main .hero h1.allen-home-name .allen-home-name-mobile{
-  display:none!important;
-}
-.main .hero .allen-hero-right{
-  width:100%;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding-top:clamp(130px,10vw,165px);
-}
-.main .hero .allen-hero-surname{
-  width:100%;
-  margin:0 0 clamp(38px,4.2vw,65px);
-  color:#ffe7ee;
-  text-align:center;
-  white-space:nowrap;
-  font:800 clamp(36px,4.8vw,75px)/1.1 'Outfit',sans-serif;
-  letter-spacing:-.04em;
-  line-height:1.1;
-  background:none!important;
-  text-shadow:0 3px 16px rgba(20,0,12,.72),0 0 26px rgba(231,52,95,.25);
-}
-.main .hero .allen-hero-right .a13x-portrait-wrap{
-  width:100%;
-  min-width:0;
-}
-.main .hero .allen-hero-right > .hero-image{
-  width:100%;
-}
-/* This gallery has an important margin in ronova-experience.css. Override it
-   with higher specificity so the three panels align with Ronova's portrait. */
-.main .hero .ronova-top-gallery{
-  margin:clamp(56px,5vw,86px) 0 clamp(26px,4vw,48px) auto!important;
+.main .hero h1.allen-home-name .allen-home-surname{
+ display:inline!important;
+ margin:0 0 0 .11em;
+ padding:0!important;
+ font:inherit;
+ letter-spacing:inherit;
+ color:#ffd3df!important;
+ -webkit-text-fill-color:#ffd3df!important;
+ background:none!important;
+ -webkit-background-clip:initial!important;
+ background-clip:initial!important;
+ box-decoration-break:clone;
 }
 body.cinema-motion .main .hero h1.allen-home-name.cinema-text{
-  clip-path:none!important;
-  opacity:1!important;
-  transform:none!important;
+ clip-path:none!important;opacity:1!important;transform:none!important;
+}
+.main .hero .allen-hero-right{
+ display:flex;align-items:center;flex-direction:column;
+ min-width:0;width:100%;
+ padding-top:clamp(195px,17vw,250px);
+}
+.main .hero .allen-hero-right .a13x-portrait-wrap{width:100%;min-width:0}
+.main .hero .allen-hero-right > .hero-image{width:100%}
+.main .hero .ronova-top-gallery{
+ margin:clamp(42px,4vw,65px) 0 clamp(26px,4vw,48px) auto!important;
+}
+@media(max-width:1120px){
+ .main .hero h1.allen-home-name{font-size:clamp(30px,3.4vw,40px)}
 }
 @media(max-width:990px){
-  .main .hero{
-    grid-template-columns:minmax(0,1fr);
-    gap:clamp(20px,4vw,32px);
-  }
-  .main .hero h1.allen-home-name{
-    font-size:clamp(35px,6.7vw,58px);
-    white-space:normal;
-  }
-  .main .hero h1.allen-home-name .allen-home-name-mobile{
-    display:block!important;
-    margin-top:2px;
-    font-size:clamp(34px,7.8vw,60px);
-    line-height:1.12;
-    color:#ffcbd9!important;
-    -webkit-text-fill-color:#ffcbd9!important;
-    background:none!important;
-    -webkit-background-clip:initial!important;
-    background-clip:initial!important;
-  }
-  .main .hero .ronova-top-gallery{
-    margin:clamp(20px,3.4vw,32px) 0 clamp(20px,4vw,35px) auto!important;
-  }
-  .main .hero .allen-hero-right{
-    max-width:min(100%,520px);
-    padding-top:0;
-    margin:0 auto;
-  }
-  .main .hero .allen-hero-surname{display:none}
+ .main .hero{
+  grid-template-columns:minmax(0,1fr);
+  gap:clamp(20px,4vw,32px);
+ }
+ .main .hero h1.allen-home-name{
+  width:auto;max-width:100%;font-size:clamp(35px,6vw,58px);
+  text-align:center;white-space:normal;
+ }
+ .main .hero h1.allen-home-name .allen-home-surname{
+  display:inline!important;
+  margin-left:.12em;
+ }
+ .main .hero .ronova-top-gallery{
+  margin:clamp(20px,3vw,32px) 0 clamp(20px,4vw,35px) auto!important;
+ }
+ .main .hero .allen-hero-right{
+  max-width:min(100%,520px);padding-top:0;margin:0 auto;
+ }
 }
 @media(max-width:660px){
-  .main .hero .allen-eye-home-logo{
-    width:min(70vw,230px);
-    margin:0 auto 12px;
-  }
-  .main .hero h1.allen-home-name{
-    font-size:clamp(33px,7vw,46px);
-  }
-  .main .hero h1.allen-home-name .allen-home-name-mobile{
-    font-size:clamp(32px,8vw,45px);
-  }
+ .main .hero .allen-eye-home-logo{width:min(70vw,230px);margin:0 auto 12px}
+ .main .hero h1.allen-home-name{
+  font-size:clamp(33px,7vw,46px);
+  line-height:1.13;
+  text-align:center;
+ }
+ .main .hero h1.allen-home-name .allen-home-surname{
+  display:block!important;margin:3px 0 0;
+  font-size:.95em;
+ }
 }
