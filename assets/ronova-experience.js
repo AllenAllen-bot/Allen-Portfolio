@@ -208,6 +208,9 @@
    If there is no genuinely safe space on a narrow display, a sticker is hidden. */
 (() => {
   "use strict";
+  // Temporarily disabled by request. Keep assets and layout logic for easy restoration.
+  const stickersEnabled = false;
+  if (!stickersEnabled) return;
   if (document.querySelector(".ronova-sticker-layer")) return;
   const count = 15;
   const layer = document.createElement("div");
