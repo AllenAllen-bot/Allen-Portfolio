@@ -39,3 +39,6 @@ body.a13x-motion-off .a13x-gallery-item.v3-photo-enter{animation:none!important}
 body.v3-sidebar-hover .v3-cursor{opacity:0!important;visibility:hidden!important}
 aside nav a:hover, aside nav a:focus-visible{transform:none!important}
 @media(hover:hover) and (pointer:fine){aside nav a{cursor:pointer}}
+
+/* Disable the decorative celestial eclipse/halo; retain the Ronova video background. */
+.v3-atmosphere,.v3-eclipse,.v3-halo{display:none!important;}
