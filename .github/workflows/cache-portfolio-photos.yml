@@ -33,22 +33,22 @@ jobs:
               failures=$((failures+1))
             fi
           done <<'PHOTO_LIST'
-          cars-01.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg\&fit=crop\&w=1000\&q=78
-          cars-02.jpg|https://images.unsplash.com/photo-1544636331-e26879cd4d9b?fm=jpg\&fit=crop\&w=1000\&q=78
-          cars-03.jpg|https://images.unsplash.com/photo-1494905998402-395d579af36f?fm=jpg\&fit=crop\&w=1000\&q=78
-          cars-04.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg\&fit=crop\&w=1000\&q=78
-          animals-01.jpg|https://images.unsplash.com/photo-1546182990-dffeafbe841d?fm=jpg\&fit=crop\&w=1000\&q=78
-          animals-02.jpg|https://images.unsplash.com/photo-1561731216-c3a4d99437?fm=jpg\&fit=crop\&w=1000\&q=78
-          animals-03.jpg|https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?fm=jpg\&fit=crop\&w=1000\&q=78
-          animals-04.jpg|https://images.unsplash.com/photo-1484406566174-9da000fda645?fm=jpg\&fit=crop\&w=1000\&q=78
-          birds-01.jpg|https://images.unsplash.com/photo-1710098213129-8ff0efb0e0fc?fm=jpg\&fit=crop\&w=1000\&q=78
-          birds-02.jpg|https://images.unsplash.com/photo-1452570053594-1b985d6ea890?fm=jpg\&fit=crop\&w=1000\&q=78
-          fishes-01.jpg|https://images.unsplash.com/photo-1524096613842-71a8c45f08a2?fm=jpg\&fit=crop\&w=1000\&q=78
-          fishes-02.jpg|https://images.unsplash.com/photo-1544551763-46a013bb70d5?fm=jpg\&fit=crop\&w=1000\&q=78
-          flowers-01.jpg|https://images.unsplash.com/photo-1490750967868-88aa4486c946?fm=jpg\&fit=crop\&w=1000\&q=78
-          flowers-02.jpg|https://images.unsplash.com/photo-1457089328109-e5d9bd499191?fm=jpg\&fit=crop\&w=1000\&q=78
-          plants-01.jpg|https://images.unsplash.com/photo-1545241047-6083a3684587?fm=jpg\&fit=crop\&w=1000\&q=78
-          plants-02.jpg|https://images.unsplash.com/photo-1501004318641-b39e6451bec6?fm=jpg\&fit=crop\&w=1000\&q=78
+          cars-01.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg&fit=crop&w=1000&q=78
+          cars-02.jpg|https://images.unsplash.com/photo-1544636331-e26879cd4d9b?fm=jpg&fit=crop&w=1000&q=78
+          cars-03.jpg|https://images.unsplash.com/photo-1494905998402-395d579af36f?fm=jpg&fit=crop&w=1000&q=78
+          cars-04.jpg|https://images.unsplash.com/photo-1503376780353-7e6692767b70?fm=jpg&fit=crop&w=1000&q=78
+          animals-01.jpg|https://images.unsplash.com/photo-1546182990-dffeafbe841d?fm=jpg&fit=crop&w=1000&q=78
+          animals-02.jpg|https://images.unsplash.com/photo-1561731216-c3a4d99437?fm=jpg&fit=crop&w=1000&q=78
+          animals-03.jpg|https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?fm=jpg&fit=crop&w=1000&q=78
+          animals-04.jpg|https://images.unsplash.com/photo-1484406566174-9da000fda645?fm=jpg&fit=crop&w=1000&q=78
+          birds-01.jpg|https://images.unsplash.com/photo-1710098213129-8ff0efb0e0fc?fm=jpg&fit=crop&w=1000&q=78
+          birds-02.jpg|https://images.unsplash.com/photo-1452570053594-1b985d6ea890?fm=jpg&fit=crop&w=1000&q=78
+          fishes-01.jpg|https://images.unsplash.com/photo-1524096613842-71a8c45f08a2?fm=jpg&fit=crop&w=1000&q=78
+          fishes-02.jpg|https://images.unsplash.com/photo-1544551763-46a013bb70d5?fm=jpg&fit=crop&w=1000&q=78
+          flowers-01.jpg|https://images.unsplash.com/photo-1490750967868-88aa4486c946?fm=jpg&fit=crop&w=1000&q=78
+          flowers-02.jpg|https://images.unsplash.com/photo-1457089328109-e5d9bd499191?fm=jpg&fit=crop&w=1000&q=78
+          plants-01.jpg|https://images.unsplash.com/photo-1545241047-6083a3684587?fm=jpg&fit=crop&w=1000&q=78
+          plants-02.jpg|https://images.unsplash.com/photo-1501004318641-b39e6451bec6?fm=jpg&fit=crop&w=1000&q=78
           PHOTO_LIST
           echo "Failed downloads: $failures"
       - name: Commit cached photos
