@@ -30,7 +30,7 @@ jobs:
           while IFS='|' read -r filename url; do
             [ -z "$filename" ] && continue
             target="assets/portfolio-photos/$filename"
-            if [ -s "$target" ]; then continue; fi
+            if [ -s "$target" ] && [ "$filename" != "cars-04.jpg" ]; then continue; fi
             if ! curl --fail --location --silent --show-error --retry 3 --connect-timeout 15 --max-time 60 "$url" -o "$target"; then
               echo "::warning::Failed to download $filename; website can use its remote fallback"
               rm -f "$target"
